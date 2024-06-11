@@ -33,6 +33,7 @@
 		476D3EB12C11B46D0025B9F5 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 476D3EB02C11B46D0025B9F5 /* FirebaseStorage */; };
 		479D65F52C153DAC0073B9B1 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479D65F42C153DAC0073B9B1 /* TabBarView.swift */; };
 		479D65F82C153E760073B9B1 /* PeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479D65F72C153E760073B9B1 /* PeopleView.swift */; };
+		479EFFEF2C189B8500DC5151 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479EFFEE2C189B8500DC5151 /* SwiftUIView.swift */; };
 		47A6308D2C12C50900F3982A /* OnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A6308C2C12C50900F3982A /* OnBoardingView.swift */; };
 		C716EC8527405AF000C49CE8 /* MainMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C716EC8427405AF000C49CE8 /* MainMessagesView.swift */; };
 		C716EC88274310A400C49CE8 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C716EC87274310A400C49CE8 /* FirebaseManager.swift */; };
@@ -70,6 +71,7 @@
 		476D3EA32C11B32E0025B9F5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		479D65F42C153DAC0073B9B1 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		479D65F72C153E760073B9B1 /* PeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleView.swift; sourceTree = "<group>"; };
+		479EFFEE2C189B8500DC5151 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		47A6308C2C12C50900F3982A /* OnBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingView.swift; sourceTree = "<group>"; };
 		C716EC8427405AF000C49CE8 /* MainMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMessagesView.swift; sourceTree = "<group>"; };
 		C716EC87274310A400C49CE8 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 				473AE7932C12AFF0005B5D86 /* Launch */,
 				473AE7962C12B3E8005B5D86 /* Login */,
 				C716EC8327405AE500C49CE8 /* MainMessages */,
+				479EFFEE2C189B8500DC5151 /* SwiftUIView.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -428,6 +431,7 @@
 				475447E32C13F9FD00BC7370 /* SocialAccountView.swift in Sources */,
 				473AE7982C12B84B005B5D86 /* Color+.swift in Sources */,
 				472BB8ED2C130DEF00DB00B7 /* AuthenTextFieldView.swift in Sources */,
+				479EFFEF2C189B8500DC5151 /* SwiftUIView.swift in Sources */,
 				475447DF2C13F26600BC7370 /* String+.swift in Sources */,
 				C716EC9C274B02AA00C49CE8 /* RecentMessage.swift in Sources */,
 				475447E82C14004C00BC7370 /* RoutingViewModel.swift in Sources */,
@@ -577,7 +581,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.foo.FirebaseChatt;
+				PRODUCT_BUNDLE_IDENTIFIER = com.foo.FirebaseChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -612,7 +616,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.foo.FirebaseChatt;
+				PRODUCT_BUNDLE_IDENTIFIER = com.foo.FirebaseChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

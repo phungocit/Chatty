@@ -10,7 +10,6 @@ import SwiftUI
 
 @main
 struct ChattyApp: App {
-
     init() {}
 
     var body: some Scene {
