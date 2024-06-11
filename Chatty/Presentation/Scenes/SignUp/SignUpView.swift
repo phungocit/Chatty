@@ -214,6 +214,7 @@ private extension SignUpView {
             FirebaseConstants.profileImageUrl: imageProfileUrl.absoluteString,
             FirebaseConstants.name: name,
         ]
+        print("userData", userData)
         FirebaseManager.shared.firestore.collection(FirebaseConstants.users)
             .document(uid).setData(userData) { err in
                 if let err {

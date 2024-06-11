@@ -24,9 +24,7 @@ struct RoutingView: View {
                 if routingVM.isLoggedIn {
                     TabBarView()
                 } else {
-                    NavigationStack(path: $routingVM.authenPath) {
-                        OnBoardingView()
-                    }
+                    OnBoardingView()
                 }
             }
             .environmentObject(routingVM)

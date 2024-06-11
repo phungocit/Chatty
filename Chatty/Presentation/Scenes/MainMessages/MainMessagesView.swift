@@ -21,10 +21,21 @@ class MainMessagesViewModel: ObservableObject {
 
         fetchCurrentUser()
 
-        fetchRecentMessages()
+        // fetchRecentMessages()
     }
 
-    @Published var recentMessages = [RecentMessage]()
+    @Published var recentMessages = [
+        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://random.dog/410b6af5-9d35-408b-8339-5b2bee994e5d.jpg", timestamp: Date()),
+        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+    ]
 
     private var firestoreListener: ListenerRegistration?
 
@@ -71,14 +82,15 @@ class MainMessagesViewModel: ObservableObject {
             return
         }
 
-        FirebaseManager.shared.firestore.collection("users").document(uid).getDocument { snapshot, error in
+        FirebaseManager.shared.firestore.collection("users").document(uid).getDocument { _, error in
             if let error = error {
                 self.errorMessage = "Failed to fetch current user: \(error)"
                 print("Failed to fetch current user:", error)
-                return
+                // return
             }
 
-            self.chatUser = try? snapshot?.data(as: ChatUser.self)
+//            self.chatUser = try? snapshot?.data(as: ChatUser.self)
+            self.chatUser = .init(uid: UUID().uuidString, email: "email", name: "Name", profileImageUrl: "https://images.pexels.com/photos/96938/pexels-photo-96938.jpeg?cs=srgb&dl=pexels-francesco-ungaro-96938.jpg&fm=jpg")
             FirebaseManager.shared.currentUser = self.chatUser
         }
     }
@@ -134,42 +146,42 @@ struct MainMessagesView: View {
                     .padding(.vertical, 12)
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.systemBackground)
             .padding(.top, -12)
             .padding([.horizontal, .bottom])
         }
         .dismissKeyboard()
-        .background(Color.systemBackground)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    shouldShowLogOutOptions.toggle()
-                } label: {
-                    LazyImageView(url: vm.chatUser?.profileImageUrl)
-                        .scaledToFill()
-                        .frame(width: 32, height: 32)
-                        .clipShape(Circle())
-                }
-            }
-            ToolbarItem(placement: .principal) {
-                Text("Chats")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundStyle(Color.label)
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    shouldShowNewMessageScreen.toggle()
-                } label: {
-                    Image("new-message")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20, height: 20)
-                        .foregroundStyle(Color.label)
-                }
-            }
-        }
-        .searchable(text: .constant(""), prompt: "Search")
-        .navigationBarTitleDisplayMode(.inline)
+//        .toolbar {
+//            ToolbarItem(placement: .topBarLeading) {
+//                Button {
+//                    shouldShowLogOutOptions.toggle()
+//                } label: {
+//                    LazyImageView(url: vm.chatUser?.profileImageUrl)
+//                        .scaledToFill()
+//                        .frame(width: 32, height: 32)
+//                        .clipShape(Circle())
+//                }
+//            }
+//            ToolbarItem(placement: .principal) {
+//                Text("Chats")
+//                    .font(.title2)
+//                    .fontWeight(.bold)
+//                    .foregroundStyle(Color.label)
+//            }
+//            ToolbarItem(placement: .topBarTrailing) {
+//                Button {
+//                    shouldShowNewMessageScreen.toggle()
+//                } label: {
+//                    Image("new-message")
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(width: 20, height: 20)
+//                        .foregroundStyle(Color.greenCustom)
+//                }
+//            }
+//        }
+        //.navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $shouldNavigateToChatLogView) {
             ChatLogView(vm: chatLogViewModel)
         }

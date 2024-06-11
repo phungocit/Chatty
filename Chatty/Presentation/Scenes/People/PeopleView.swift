@@ -14,6 +14,10 @@ struct PeopleView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
+                ForEach(0 ..< 50) { i in
+                    Text("\(i)")
+                        .padding()
+                }
 //                ForEach(vm.recentMessages) { recentMessage in
 //                    Button {
 //                        let uid = FirebaseManager.shared.auth.currentUser?.uid == recentMessage.fromId ? recentMessage.toId : recentMessage.fromId
@@ -51,28 +55,29 @@ struct PeopleView: View {
 //                    .padding(.vertical, 12)
 //                }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.systemBackground)
             .padding(.top, -12)
             .padding([.horizontal, .bottom])
         }
-        .background(Color.systemBackground)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    shouldShowLogOutOptions.toggle()
-                } label: {
-                    LazyImageView(url: "https://images.pexels.com/photos/96938/pexels-photo-96938.jpeg?cs=srgb&dl=pexels-francesco-ungaro-96938.jpg&fm=jpg")
-                        .scaledToFill()
-                        .frame(width: 32, height: 32)
-                        .clipShape(Circle())
-                }
-            }
-            ToolbarItem(placement: .principal) {
-                Text("People")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundStyle(Color.label)
-            }
-        }
+//        .toolbar {
+//            ToolbarItem(placement: .topBarLeading) {
+//                Button {
+//                    shouldShowLogOutOptions.toggle()
+//                } label: {
+//                    LazyImageView(url: "https://images.pexels.com/photos/96938/pexels-photo-96938.jpeg?cs=srgb&dl=pexels-francesco-ungaro-96938.jpg&fm=jpg")
+//                        .scaledToFill()
+//                        .frame(width: 32, height: 32)
+//                        .clipShape(Circle())
+//                }
+//            }
+//            ToolbarItem(placement: .principal) {
+//                Text("People")
+//                    .font(.title2)
+//                    .fontWeight(.bold)
+//                    .foregroundStyle(Color.label)
+//            }
+//        }
         .actionSheet(isPresented: $shouldShowLogOutOptions) {
             .init(
                 title: Text("Settings"),
@@ -85,7 +90,7 @@ struct PeopleView: View {
                 ]
             )
         }
-        .navigationBarTitleDisplayMode(.inline)
+        // .navigationBarTitleDisplayMode(.inline)
     }
 }
 

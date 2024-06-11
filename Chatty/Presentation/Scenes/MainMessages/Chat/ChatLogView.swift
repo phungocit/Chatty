@@ -12,51 +12,65 @@ class ChatLogViewModel: ObservableObject {
     @Published var chatText = ""
     @Published var errorMessage = ""
 
-    @Published var chatMessages = [ChatMessage]()
+    @Published var chatMessages: [ChatMessage] = [
+        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
+        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
+        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
+        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
+        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
+        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
+        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
+        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
+        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
+        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
+        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
+        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
+        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
+    ]
 
     var chatUser: ChatUser?
 
     init(chatUser: ChatUser?) {
         self.chatUser = chatUser
 
-        fetchMessages()
+        //fetchMessages()
     }
 
     var firestoreListener: ListenerRegistration?
 
     func fetchMessages() {
-        guard let fromId = FirebaseManager.shared.auth.currentUser?.uid else { return }
-        guard let toId = chatUser?.uid else { return }
-        firestoreListener?.remove()
-        chatMessages.removeAll()
-        firestoreListener = FirebaseManager.shared.firestore
-            .collection(FirebaseConstants.messages)
-            .document(fromId)
-            .collection(toId)
-            .order(by: FirebaseConstants.timestamp)
-            .addSnapshotListener { querySnapshot, error in
-                if let error = error {
-                    self.errorMessage = "Failed to listen for messages: \(error)"
-                    print(error)
-                    return
-                }
-
-                querySnapshot?.documentChanges.forEach { change in
-                    if change.type == .added {
-                        do {
-                            let cm = try change.document.data(as: ChatMessage.self)
-                            self.chatMessages.append(cm)
-                            print("Appending chatMessage in ChatLogView: \(Date())")
-                        } catch {
-                            print("Failed to decode message: \(error)")
-                        }
-                    }
-                }
-
-                DispatchQueue.main.async {
-                    self.count += 1
-                }
-            }
+//        guard let fromId = FirebaseManager.shared.auth.currentUser?.uid else { return }
+//        guard let toId = chatUser?.uid else { return }
+//        firestoreListener?.remove()
+//        chatMessages.removeAll()
+//        firestoreListener = FirebaseManager.shared.firestore
+//            .collection(FirebaseConstants.messages)
+//            .document(fromId)
+//            .collection(toId)
+//            .order(by: FirebaseConstants.timestamp)
+//            .addSnapshotListener { querySnapshot, error in
+//                if let error = error {
+//                    self.errorMessage = "Failed to listen for messages: \(error)"
+//                    print(error)
+//                    return
+//                }
+//
+//                querySnapshot?.documentChanges.forEach { change in
+//                    if change.type == .added {
+//                        do {
+//                            let cm = try change.document.data(as: ChatMessage.self)
+//                            self.chatMessages.append(cm)
+//                            print("Appending chatMessage in ChatLogView: \(Date())")
+//                        } catch {
+//                            print("Failed to decode message: \(error)")
+//                        }
+//                    }
+//                }
+//
+//                DispatchQueue.main.async {
+//                    self.count += 1
+//                }
+//            }
     }
 
     func handleSend() {
@@ -243,6 +257,7 @@ struct ChatLogView: View {
             .background(Color.blue)
             .cornerRadius(4)
         }
+        .background(.ultraThinMaterial)
     }
 }
 
