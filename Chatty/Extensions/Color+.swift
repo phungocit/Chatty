@@ -64,4 +64,8 @@ extension Color {
     static let systemRed = Color(UIColor.systemRed)
     static let systemTeal = Color(UIColor.systemTeal)
     static let systemIndigo = Color(UIColor.systemIndigo)
+
+    static var random: Color {
+        Color(red: .random(in: 0 ... 1), green: .random(in: 0 ... 1), blue: .random(in: 0 ... 1))
+    }
 }

@@ -33,7 +33,7 @@ class ChatLogViewModel: ObservableObject {
     init(chatUser: ChatUser?) {
         self.chatUser = chatUser
 
-        //fetchMessages()
+        // fetchMessages()
     }
 
     var firestoreListener: ListenerRegistration?
@@ -182,9 +182,10 @@ struct ChatLogView: View {
 //        self.chatUser = chatUser
 //        self.vm = .init(chatUser: chatUser)
 //    }
-
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var routingVM: RoutingViewModel
     @ObservedObject var vm: ChatLogViewModel
-    @State var aaa = Visibility.hidden
+    @State var tabBarVisibility = Visibility.hidden
     static let emptyScrollToString = "Empty"
 
     var body: some View {
@@ -192,29 +193,38 @@ struct ChatLogView: View {
             messagesView
             Text(vm.errorMessage)
         }
-        .dismissKeyboard()
         .background(Color.systemBackground)
+        .dismissKeyboard()
         .navigationTitle(vm.chatUser?.name ?? "")
+        .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .onDisappear {
             vm.firestoreListener?.remove()
         }
         .toolbar {
-            ToolbarItem(placement: .bottomBar) {
-                chatBottomBar
+            ToolbarItem(placement: .topBarLeading) {
+                BackButton {
+                    tabBarVisibility = .visible
+                    dismiss()
+                    // routingVM.popView()
+                }
             }
+//            ToolbarItem(placement: .principal) {
+//                Text(vm.chatUser?.name ?? "")
+//                    .font(.title3)
+//                    .fontWeight(.semibold)
+//                    .foregroundStyle(.white)
+//                    .navigationBarColor(Color(.darkGray))
+//            }
         }
-        .onAppear {
-            aaa = .hidden
-        }
-        .onDisappear {
-            aaa = .visible
-        }
-//        .toolbar(aaa, for: .tabBar)
+        .toolbar(tabBarVisibility, for: .tabBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        //.toolbarBackground(.regularMaterial, for: .navigationBar)
         .ignoresSafeArea(.keyboard, edges: .bottom)
-//        .safeAreaInset(edge: .bottom) {
-//            chatBottomBar
-//        }
+        .safeAreaInset(edge: .bottom) {
+            chatBottomBar
+                .background(.regularMaterial)
+        }
     }
 
     private var messagesView: some View {
@@ -257,7 +267,7 @@ struct ChatLogView: View {
             .background(Color.blue)
             .cornerRadius(4)
         }
-        .background(.ultraThinMaterial)
+        .padding(.horizontal)
     }
 }
 
@@ -266,7 +276,7 @@ struct MessageView: View {
 
     var body: some View {
         VStack {
-            if message.fromId == FirebaseManager.shared.auth.currentUser?.uid {
+//            if message.fromId == FirebaseManager.shared.auth.currentUser?.uid {
                 HStack {
                     Spacer()
                     HStack {
@@ -277,7 +287,7 @@ struct MessageView: View {
                     .background(Color.blue)
                     .cornerRadius(8)
                 }
-            } else {
+            //} else {
                 HStack {
                     HStack {
                         Text(message.text)
@@ -288,7 +298,7 @@ struct MessageView: View {
                     .cornerRadius(8)
                     Spacer()
                 }
-            }
+            //}
         }
         .padding(.horizontal)
         .padding(.top, 8)
