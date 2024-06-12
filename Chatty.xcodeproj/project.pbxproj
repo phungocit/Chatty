@@ -26,7 +26,6 @@
 		475447F02C1437FB00BC7370 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475447EF2C1437FB00BC7370 /* BackButton.swift */; };
 		475447F22C144C1100BC7370 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475447F12C144C1100BC7370 /* LaunchView.swift */; };
 		476D3EA22C11B2650025B9F5 /* ChattyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476D3EA12C11B2650025B9F5 /* ChattyApp.swift */; };
-		476D3EA42C11B32E0025B9F5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 476D3EA32C11B32E0025B9F5 /* GoogleService-Info.plist */; };
 		476D3EA72C11B3A00025B9F5 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 476D3EA62C11B3A00025B9F5 /* FirebaseAuth */; };
 		476D3EA92C11B3A00025B9F5 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 476D3EA82C11B3A00025B9F5 /* FirebaseFirestore */; };
 		476D3EAF2C11B45D0025B9F5 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 476D3EAE2C11B45D0025B9F5 /* FirebaseFirestoreSwift */; };
@@ -35,6 +34,9 @@
 		479D65F82C153E760073B9B1 /* PeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479D65F72C153E760073B9B1 /* PeopleView.swift */; };
 		479EFFEF2C189B8500DC5151 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479EFFEE2C189B8500DC5151 /* SwiftUIView.swift */; };
 		47A6308D2C12C50900F3982A /* OnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A6308C2C12C50900F3982A /* OnBoardingView.swift */; };
+		AD557CFF2C193BC40083C7B0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AD557CFE2C193BC40083C7B0 /* GoogleService-Info.plist */; };
+		ADAC8EC02C19847900C3610F /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = ADAC8EBF2C19847900C3610F /* SwiftUIIntrospect */; };
+		ADAC8EC32C19886B00C3610F /* SwiftUIX in Frameworks */ = {isa = PBXBuildFile; productRef = ADAC8EC22C19886B00C3610F /* SwiftUIX */; };
 		C716EC8527405AF000C49CE8 /* MainMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C716EC8427405AF000C49CE8 /* MainMessagesView.swift */; };
 		C716EC88274310A400C49CE8 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C716EC87274310A400C49CE8 /* FirebaseManager.swift */; };
 		C716EC8E27442D2800C49CE8 /* ChatUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C716EC8D27442D2800C49CE8 /* ChatUser.swift */; };
@@ -68,11 +70,11 @@
 		475447EF2C1437FB00BC7370 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		475447F12C144C1100BC7370 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		476D3EA12C11B2650025B9F5 /* ChattyApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChattyApp.swift; sourceTree = "<group>"; };
-		476D3EA32C11B32E0025B9F5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		479D65F42C153DAC0073B9B1 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		479D65F72C153E760073B9B1 /* PeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleView.swift; sourceTree = "<group>"; };
 		479EFFEE2C189B8500DC5151 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		47A6308C2C12C50900F3982A /* OnBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingView.swift; sourceTree = "<group>"; };
+		AD557CFE2C193BC40083C7B0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C716EC8427405AF000C49CE8 /* MainMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMessagesView.swift; sourceTree = "<group>"; };
 		C716EC87274310A400C49CE8 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		C716EC8D27442D2800C49CE8 /* ChatUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUser.swift; sourceTree = "<group>"; };
@@ -93,9 +95,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ADAC8EC32C19886B00C3610F /* SwiftUIX in Frameworks */,
 				470A2E1B2C1492F6001E6B2E /* NukeUI in Frameworks */,
 				476D3EA72C11B3A00025B9F5 /* FirebaseAuth in Frameworks */,
 				476D3EA92C11B3A00025B9F5 /* FirebaseFirestore in Frameworks */,
+				ADAC8EC02C19847900C3610F /* SwiftUIIntrospect in Frameworks */,
 				476D3EB12C11B46D0025B9F5 /* FirebaseStorage in Frameworks */,
 				476D3EAF2C11B45D0025B9F5 /* FirebaseFirestoreSwift in Frameworks */,
 			);
@@ -304,7 +308,7 @@
 			children = (
 				476D3EA12C11B2650025B9F5 /* ChattyApp.swift */,
 				C7EDFBF92724DE1E0041EC95 /* Assets.xcassets */,
-				476D3EA32C11B32E0025B9F5 /* GoogleService-Info.plist */,
+				AD557CFE2C193BC40083C7B0 /* GoogleService-Info.plist */,
 				473AE7912C12AEA6005B5D86 /* Data */,
 				473AE78F2C12AE18005B5D86 /* Domain */,
 				473AE78C2C12AD31005B5D86 /* Presentation */,
@@ -344,6 +348,8 @@
 				476D3EAE2C11B45D0025B9F5 /* FirebaseFirestoreSwift */,
 				476D3EB02C11B46D0025B9F5 /* FirebaseStorage */,
 				470A2E1A2C1492F6001E6B2E /* NukeUI */,
+				ADAC8EBF2C19847900C3610F /* SwiftUIIntrospect */,
+				ADAC8EC22C19886B00C3610F /* SwiftUIX */,
 			);
 			productName = Chatty;
 			productReference = C7EDFBF22724DE1B0041EC95 /* Chatty.app */;
@@ -376,6 +382,8 @@
 			packageReferences = (
 				476D3EA52C11B3A00025B9F5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				470A2E192C1492F6001E6B2E /* XCRemoteSwiftPackageReference "Nuke" */,
+				ADAC8EBE2C19847900C3610F /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
+				ADAC8EC12C19886B00C3610F /* XCRemoteSwiftPackageReference "SwiftUIX" */,
 			);
 			productRefGroup = C7EDFBF32724DE1B0041EC95 /* Products */;
 			projectDirPath = "";
@@ -392,9 +400,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7EDFBFD2724DE1E0041EC95 /* Preview Assets.xcassets in Resources */,
+				AD557CFF2C193BC40083C7B0 /* GoogleService-Info.plist in Resources */,
 				473AE79E2C12BF52005B5D86 /* LaunchScreen.storyboard in Resources */,
 				C7EDFBFA2724DE1E0041EC95 /* Assets.xcassets in Resources */,
-				476D3EA42C11B32E0025B9F5 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -668,6 +676,22 @@
 				minimumVersion = 10.27.0;
 			};
 		};
+		ADAC8EBE2C19847900C3610F /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/swiftui-introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.4;
+			};
+		};
+		ADAC8EC12C19886B00C3610F /* XCRemoteSwiftPackageReference "SwiftUIX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftUIX/SwiftUIX.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -695,6 +719,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 476D3EA52C11B3A00025B9F5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		ADAC8EBF2C19847900C3610F /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ADAC8EBE2C19847900C3610F /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
+			productName = SwiftUIIntrospect;
+		};
+		ADAC8EC22C19886B00C3610F /* SwiftUIX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ADAC8EC12C19886B00C3610F /* XCRemoteSwiftPackageReference "SwiftUIX" */;
+			productName = SwiftUIX;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -96,6 +96,8 @@ class MainMessagesViewModel: ObservableObject {
     }
 }
 
+import SwiftUIIntrospect
+
 struct MainMessagesView: View {
     @EnvironmentObject private var routingVM: RoutingViewModel
     @StateObject private var vm = MainMessagesViewModel()
@@ -151,39 +153,43 @@ struct MainMessagesView: View {
             .padding(.top, -12)
             .padding([.horizontal, .bottom])
         }
+        .searchable(text: .constant(""), prompt: "Search...")
         .dismissKeyboard()
-//        .toolbar {
-//            ToolbarItem(placement: .topBarLeading) {
-//                Button {
-//                    shouldShowLogOutOptions.toggle()
-//                } label: {
-//                    LazyImageView(url: vm.chatUser?.profileImageUrl)
-//                        .scaledToFill()
-//                        .frame(width: 32, height: 32)
-//                        .clipShape(Circle())
-//                }
-//            }
-//            ToolbarItem(placement: .principal) {
-//                Text("Chats")
-//                    .font(.title2)
-//                    .fontWeight(.bold)
-//                    .foregroundStyle(Color.label)
-//            }
-//            ToolbarItem(placement: .topBarTrailing) {
-//                Button {
-//                    shouldShowNewMessageScreen.toggle()
-//                } label: {
-//                    Image("new-message")
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 20, height: 20)
-//                        .foregroundStyle(Color.greenCustom)
-//                }
-//            }
-//        }
-        //.navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    shouldShowLogOutOptions.toggle()
+                } label: {
+                    LazyImageView(url: vm.chatUser?.profileImageUrl)
+                        .scaledToFill()
+                        .frame(width: 32, height: 32)
+                        .clipShape(Circle())
+                }
+            }
+            ToolbarItem(placement: .principal) {
+                Text("Chats")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundStyle(Color.label)
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    shouldShowNewMessageScreen.toggle()
+                } label: {
+                    Image("new-message")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .foregroundStyle(Color.greenCustom)
+                }
+            }
+        }
+//        .toolbarBackground(.automatic, for: .navigationBar)
+//        .toolbarBackground(.regularMaterial, for: .navigationBar)
+        .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $shouldNavigateToChatLogView) {
             ChatLogView(vm: chatLogViewModel)
+                .environmentObject(routingVM)
         }
         .actionSheet(isPresented: $shouldShowLogOutOptions) {
             .init(

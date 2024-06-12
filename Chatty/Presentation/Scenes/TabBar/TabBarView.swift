@@ -72,7 +72,7 @@ struct TabBarView: View {
 //                }
 //            }
 //        }
-        NavigationStack(path: $routingVM.mainMessagePath) {
+//        ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
                 NavigationStack(path: $routingVM.mainMessagePath) {
                     MainMessagesView()
@@ -88,47 +88,80 @@ struct TabBarView: View {
                     Label(Tab.people.rawValue, image: Tab.people.image)
                 }
                 .tag(Tab.people)
+                //            .toolbar {
+                //                ToolbarItem(placement: .topBarLeading) {
+                //                    Button {
+                //                        // shouldShowLogOutOptions.toggle()
+                //                    } label: {
+                //                        LazyImageView(url: "https://images.pexels.com/photos/96938/pexels-photo-96938.jpeg?cs=srgb&dl=pexels-francesco-ungaro-96938.jpg&fm=jpg")
+                //                            .scaledToFill()
+                //                            .frame(width: 32, height: 32)
+                //                            .clipShape(Circle())
+                //                    }
+                //                }
+                //                ToolbarItem(placement: .principal) {
+                //                    Text(selectedTab == .chats ? "Chats" : "People")
+                //                        .font(.title2)
+                //                        .fontWeight(.bold)
+                //                        .foregroundStyle(Color.label)
+                //                }
+                //                if selectedTab == .chats {
+                //                    ToolbarItem(placement: .topBarTrailing) {
+                //                        Button {
+                //                            // shouldShowNewMessageScreen.toggle()
+                //                        } label: {
+                //                            Image("new-message")
+                //                                .resizable()
+                //                                .scaledToFit()
+                //                                .frame(width: 20, height: 20)
+                //                                .foregroundStyle(Color.greenCustom)
+                //                        }
+                //                    }
+                //                }
+                //            }
+                //            .toolbar(.visible, for: .navigationBar)
+                //            .toolbarBackground(.white, for: .navigationBar)
+                //            .onChange(of: selectedTab) { newValue in
+                //                search = newValue == .chats
+                //            }
+                //            .tint(Color.greenCustom)
+                //            .navigationTitle("")
+                //            .navigationBarTitleDisplayMode(.inline)
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        // shouldShowLogOutOptions.toggle()
-                    } label: {
-                        LazyImageView(url: "https://images.pexels.com/photos/96938/pexels-photo-96938.jpeg?cs=srgb&dl=pexels-francesco-ungaro-96938.jpg&fm=jpg")
-                            .scaledToFill()
-                            .frame(width: 32, height: 32)
-                            .clipShape(Circle())
-                    }
-                }
-                ToolbarItem(placement: .principal) {
-                    Text(selectedTab == .chats ? "Chats" : "People")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color.label)
-                }
-                if selectedTab == .chats {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            // shouldShowNewMessageScreen.toggle()
-                        } label: {
-                            Image("new-message")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 20, height: 20)
-                                .foregroundStyle(Color.greenCustom)
-                        }
-                    }
-                }
-            }
-            .toolbar(.visible, for: .navigationBar)
-            .toolbarBackground(.white, for: .navigationBar)
-            .onChange(of: selectedTab) { newValue in
-                search = newValue == .chats
-            }
+//            .ignoresSafeArea()
             .tint(Color.greenCustom)
-            .navigationTitle("")
-            .navigationBarTitleDisplayMode(.inline)
-        }
+            .toolbar(.visible, for: .tabBar)
+//            .toolbarBackground(.clear, for: .tabBar)
+//        }
+//            .overlay(alignment: .bottom) {
+//                HStack {
+//                    VStack {
+//                        Image(Tab.chats.image)
+//                        Text(Tab.chats.rawValue)
+//                            .font(.caption2)
+//                    }
+//                    .foregroundStyle(selectedTab == .chats ? Color.greenCustom : Color.systemGray2)
+//                    .frame(minWidth: 0, maxWidth: .infinity)
+//                    .contentShape(Rectangle())
+//                    .onTapGesture {
+//                        print("chats")
+//                        selectedTab = .chats
+//                    }
+//
+//                    VStack {
+//                        Image(Tab.people.image)
+//                        Text(Tab.people.rawValue)
+//                            .font(.caption2)
+//                    }
+//                    .foregroundStyle(selectedTab == .people ? Color.greenCustom : Color.systemGray2)
+//                    .frame(minWidth: 0, maxWidth: .infinity)
+//                    .contentShape(Rectangle())
+//                    .onTapGesture {
+//                        print("people")
+//                        selectedTab = .people
+//                    }
+//                }
+//            }
     }
 }
 

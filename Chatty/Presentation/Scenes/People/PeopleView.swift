@@ -60,24 +60,24 @@ struct PeopleView: View {
             .padding(.top, -12)
             .padding([.horizontal, .bottom])
         }
-//        .toolbar {
-//            ToolbarItem(placement: .topBarLeading) {
-//                Button {
-//                    shouldShowLogOutOptions.toggle()
-//                } label: {
-//                    LazyImageView(url: "https://images.pexels.com/photos/96938/pexels-photo-96938.jpeg?cs=srgb&dl=pexels-francesco-ungaro-96938.jpg&fm=jpg")
-//                        .scaledToFill()
-//                        .frame(width: 32, height: 32)
-//                        .clipShape(Circle())
-//                }
-//            }
-//            ToolbarItem(placement: .principal) {
-//                Text("People")
-//                    .font(.title2)
-//                    .fontWeight(.bold)
-//                    .foregroundStyle(Color.label)
-//            }
-//        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    shouldShowLogOutOptions.toggle()
+                } label: {
+                    LazyImageView(url: "https://images.pexels.com/photos/96938/pexels-photo-96938.jpeg?cs=srgb&dl=pexels-francesco-ungaro-96938.jpg&fm=jpg")
+                        .scaledToFill()
+                        .frame(width: 32, height: 32)
+                        .clipShape(Circle())
+                }
+            }
+            ToolbarItem(placement: .principal) {
+                Text("People")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundStyle(Color.label)
+            }
+        }
         .actionSheet(isPresented: $shouldShowLogOutOptions) {
             .init(
                 title: Text("Settings"),
