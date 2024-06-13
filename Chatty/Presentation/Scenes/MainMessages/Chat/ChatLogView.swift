@@ -219,7 +219,6 @@ struct ChatLogView: View {
         }
         .toolbar(tabBarVisibility, for: .tabBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        //.toolbarBackground(.regularMaterial, for: .navigationBar)
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .safeAreaInset(edge: .bottom) {
             chatBottomBar
