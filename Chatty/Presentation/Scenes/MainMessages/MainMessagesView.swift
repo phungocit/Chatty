@@ -184,8 +184,6 @@ struct MainMessagesView: View {
                 }
             }
         }
-//        .toolbarBackground(.automatic, for: .navigationBar)
-//        .toolbarBackground(.regularMaterial, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $shouldNavigateToChatLogView) {
             ChatLogView(vm: chatLogViewModel)

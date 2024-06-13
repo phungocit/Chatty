@@ -54,7 +54,7 @@ struct SubView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Text("asd")
+                    Text("Back")
                 }
             }
         }
