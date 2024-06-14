@@ -5,8 +5,8 @@
 //  Created by Phil Tran on 11/21/21.
 //
 
-import Foundation
 import FirebaseFirestoreSwift
+import Foundation
 
 struct RecentMessage: Codable, Identifiable {
     @DocumentID var id: String?
@@ -23,5 +23,9 @@ struct RecentMessage: Codable, Identifiable {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .abbreviated
         return formatter.localizedString(for: timestamp, relativeTo: Date())
+    }
+
+    var isFromCurrentUser: Bool {
+        FirebaseManager.shared.auth.currentUser?.uid == fromId
     }
 }

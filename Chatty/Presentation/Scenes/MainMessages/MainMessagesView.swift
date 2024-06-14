@@ -13,31 +13,26 @@ class MainMessagesViewModel: ObservableObject {
     @Published var errorMessage = ""
     @Published var chatUser: ChatUser?
     @Published var isLogOut = false
-
-    init() {
-//        DispatchQueue.main.async {
-//            self.isLogOut = FirebaseManager.shared.auth.currentUser?.uid == nil
-//        }
-
-        fetchCurrentUser()
-
-        // fetchRecentMessages()
-    }
-
-    @Published var recentMessages = [
-        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://random.dog/410b6af5-9d35-408b-8339-5b2bee994e5d.jpg", timestamp: Date()),
-        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
-        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
-        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
-        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
-        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
-        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
-        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
-        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
-        RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
-    ]
+    @Published var recentMessages = [RecentMessage]()
+//        = [
+//            RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://random.dog/410b6af5-9d35-408b-8339-5b2bee994e5d.jpg", timestamp: Date()),
+//            RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+//            RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+//            RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+//            RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+//            RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+//            RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+//            RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+//            RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+//            RecentMessage(id: UUID().uuidString, text: "Lorem \(Int.random(in: 0 ... 10))", email: "email \(Int.random(in: 0 ... 10))@gmail.com", name: "Name \(Int.random(in: 0 ... 10))", fromId: UUID().uuidString, toId: UUID().uuidString, profileImageUrl: "https://fastly.picsum.photos/id/721/500/500.jpg", timestamp: Date()),
+//        ]
 
     private var firestoreListener: ListenerRegistration?
+
+    init() {
+        fetchCurrentUser()
+        fetchRecentMessages()
+    }
 
     func fetchRecentMessages() {
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
@@ -82,21 +77,19 @@ class MainMessagesViewModel: ObservableObject {
             return
         }
 
-        FirebaseManager.shared.firestore.collection("users").document(uid).getDocument { _, error in
+        FirebaseManager.shared.firestore.collection("users").document(uid).getDocument { snapshot, error in
             if let error = error {
                 self.errorMessage = "Failed to fetch current user: \(error)"
                 print("Failed to fetch current user:", error)
-                // return
+                return
             }
 
-//            self.chatUser = try? snapshot?.data(as: ChatUser.self)
-            self.chatUser = .init(uid: UUID().uuidString, email: "email", name: "Name", profileImageUrl: "https://images.pexels.com/photos/96938/pexels-photo-96938.jpeg?cs=srgb&dl=pexels-francesco-ungaro-96938.jpg&fm=jpg")
+            self.chatUser = try? snapshot?.data(as: ChatUser.self)
+//            self.chatUser = .init(uid: UUID().uuidString, email: "email", name: "Name", profileImageUrl: "https://images.pexels.com/photos/96938/pexels-photo-96938.jpeg?cs=srgb&dl=pexels-francesco-ungaro-96938.jpg&fm=jpg")
             FirebaseManager.shared.currentUser = self.chatUser
         }
     }
 }
-
-import SwiftUIIntrospect
 
 struct MainMessagesView: View {
     @EnvironmentObject private var routingVM: RoutingViewModel
@@ -113,7 +106,7 @@ struct MainMessagesView: View {
             VStack(spacing: 0) {
                 ForEach(vm.recentMessages) { recentMessage in
                     Button {
-                        let uid = FirebaseManager.shared.auth.currentUser?.uid == recentMessage.fromId ? recentMessage.toId : recentMessage.fromId
+                        let uid = recentMessage.isFromCurrentUser ? recentMessage.toId : recentMessage.fromId
 
                         chatUser = .init(id: uid, uid: uid, email: recentMessage.email, name: recentMessage.name, profileImageUrl: recentMessage.profileImageUrl)
 
@@ -133,7 +126,7 @@ struct MainMessagesView: View {
                                     .fontWeight(.medium)
                                     .foregroundStyle(Color.label)
                                     .lineLimit(1)
-                                Text(recentMessage.text)
+                                Text((recentMessage.isFromCurrentUser ? "You: " : "") + recentMessage.text)
                                     .font(.subheadline)
                                     .lineLimit(1)
                                     .foregroundStyle(Color.systemGray)
@@ -188,7 +181,7 @@ struct MainMessagesView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $shouldNavigateToChatLogView) {
             ChatLogView(vm: chatLogViewModel)
-                //.environmentObject(routingVM)
+            // .environmentObject(routingVM)
         }
         .actionSheet(isPresented: $shouldShowLogOutOptions) {
             .init(

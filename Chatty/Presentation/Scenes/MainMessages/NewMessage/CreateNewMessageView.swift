@@ -25,9 +25,8 @@ class CreateNewMessageViewModel: ObservableObject {
                 }
 
                 documentsSnapshot?.documents.forEach { snapshot in
-                    let user = try? snapshot.data(as: ChatUser.self)
-                    if user?.uid != FirebaseManager.shared.auth.currentUser?.uid {
-                        self.users.append(user!)
+                    if let user = try? snapshot.data(as: ChatUser.self), user.uid != FirebaseManager.shared.auth.currentUser?.uid {
+                        self.users.append(user)
                     }
                 }
             }
@@ -38,7 +37,6 @@ struct CreateNewMessageView: View {
     let didSelectNewUser: (ChatUser) -> Void
 
     @Environment(\.presentationMode) var presentationMode
-
     @StateObject var vm = CreateNewMessageViewModel()
 
     var body: some View {
