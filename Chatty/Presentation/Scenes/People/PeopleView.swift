@@ -60,6 +60,10 @@ struct PeopleView: View {
             .padding(.top, -12)
             .padding([.horizontal, .bottom])
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.visible, for: .tabBar)
+        .toolbarBackground(.visible, for: .tabBar, .navigationBar)
+        .toolbarBackground(Color.systemBackground, for: .tabBar, .navigationBar)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -90,7 +94,6 @@ struct PeopleView: View {
                 ]
             )
         }
-        // .navigationBarTitleDisplayMode(.inline)
     }
 }
 
