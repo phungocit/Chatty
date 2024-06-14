@@ -83,7 +83,7 @@ class ChatLogViewModel: ObservableObject {
             .collection(toId)
             .document()
 
-        let msg = ChatMessage(id: nil, fromId: fromId, toId: toId, text: chatText, timestamp: Date())
+        let msg = ChatMessage(id: nil, fromId: fromId, toId: toId, text: chatText.isEmpty ? "Like" : chatText, timestamp: Date())
 
         try? document.setData(from: msg) { error in
             if let error = error {
@@ -176,16 +176,12 @@ class ChatLogViewModel: ObservableObject {
 }
 
 struct ChatLogView: View {
-//    let chatUser: ChatUser?
-//
-//    init(chatUser: ChatUser?) {
-//        self.chatUser = chatUser
-//        self.vm = .init(chatUser: chatUser)
-//    }
-    @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var routingVM: RoutingViewModel
     @ObservedObject var vm: ChatLogViewModel
-    @State var tabBarVisibility = Visibility.hidden
+    @Environment(\.dismiss) private var dismiss
+    @State private var tabBarVisibility = Visibility.hidden
+    @State private var isScrollToFirst = false
+    @State private var isCollapseButton = false
+    private let scrollNamespace = "scroll"
     static let emptyScrollToString = "Empty"
 
     var body: some View {
@@ -195,7 +191,7 @@ struct ChatLogView: View {
         }
         .background(Color.systemBackground)
         .dismissKeyboard()
-        .navigationTitle(vm.chatUser?.name ?? "")
+        .navigationTitle("")
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .onDisappear {
@@ -203,26 +199,56 @@ struct ChatLogView: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                BackButton {
-                    tabBarVisibility = .visible
-                    dismiss()
-                    // routingVM.popView()
+                HStack(spacing: 4) {
+                    BackButton {
+                        tabBarVisibility = .visible
+                        dismiss()
+                    }
+                    NavigationLink {} label: {
+                        HStack(spacing: 8) {
+                            LazyImageView(url: vm.chatUser?.profileImageUrl)
+                                .scaledToFill()
+                                .frame(width: 36, height: 36)
+                                .clipShape(Circle())
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text(vm.chatUser?.name ?? "")
+                                    .font(.body)
+                                    .fontWeight(.bold)
+                                    .lineLimit(1)
+                                    .foregroundStyle(Color.label)
+                                Text("Active now")
+                                    .font(.footnote)
+                                    .lineLimit(1)
+                                    .foregroundStyle(Color.systemGray)
+                            }
+                        }
+                    }
                 }
             }
-//            ToolbarItem(placement: .principal) {
-//                Text(vm.chatUser?.name ?? "")
-//                    .font(.title3)
-//                    .fontWeight(.semibold)
-//                    .foregroundStyle(.white)
-//                    .navigationBarColor(Color(.darkGray))
-//            }
+            ToolbarItem(placement: .topBarTrailing) {
+                HStack {
+                    Button {} label: {
+                        Image("phone")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 22, height: 22)
+                            .foregroundStyle(Color.greenCustom)
+                    }
+                    Button {} label: {
+                        Image("cinema")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 27, height: 22)
+                            .foregroundStyle(Color.greenCustom)
+                    }
+                }
+            }
         }
         .toolbar(tabBarVisibility, for: .tabBar)
-        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbarBackground(isScrollToFirst ? .hidden : .visible, for: .navigationBar)
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .safeAreaInset(edge: .bottom) {
             chatBottomBar
-                .background(.regularMaterial)
         }
     }
 
@@ -232,41 +258,122 @@ struct ChatLogView: View {
                 VStack {
                     ForEach(vm.chatMessages) { message in
                         MessageView(message: message)
+                            .id(message.id)
                     }
                     HStack { Spacer() }
+                        .background(Color.red)
                         .id(Self.emptyScrollToString)
                 }
                 .onReceive(vm.$count) { _ in
                     scrollViewProxy.scrollTo(Self.emptyScrollToString, anchor: .bottom)
                 }
+                .background(
+                    GeometryReader {
+                        Color.clear
+                            .preference(
+                                key: ViewOffsetKey.self,
+                                value: -$0.frame(in: .named(scrollNamespace)).origin.y
+                            )
+                    }
+                )
+                .onPreferenceChange(ViewOffsetKey.self) {
+                    isScrollToFirst = $0 <= 0
+                }
             }
         }
+        .coordinateSpace(name: scrollNamespace)
     }
 
     private var chatBottomBar: some View {
         HStack(spacing: 16) {
-            Image(systemName: "photo.on.rectangle")
-                .font(.system(size: 20))
-                .foregroundColor(Color(.darkGray))
-            ZStack {
-                DescriptionPlaceholder()
-                TextEditor(text: $vm.chatText)
-                    .opacity(vm.chatText.isEmpty ? 0.5 : 1)
+            if isCollapseButton {
+                BackButton {
+                    isCollapseButton = false
+                }
+                .rotationEffect(.init(degrees: 180))
+            } else {
+               HStack(spacing: 4) {
+                    Button {} label: {
+                        ZStack {
+                            Image("more")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20, height: 20)
+                                .foregroundStyle(Color.greenCustom)
+                        }
+                        .frame(width: 36, height: 36)
+                    }
+                    Button {} label: {
+                        ZStack {
+                            Image("camera")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 23, height: 23)
+                                .foregroundStyle(Color.greenCustom)
+                        }
+                        .frame(width: 36, height: 36)
+                    }
+                    Button {} label: {
+                        ZStack {
+                            Image("photo")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 21, height: 21)
+                                .foregroundStyle(Color.greenCustom)
+                        }
+                        .frame(width: 36, height: 36)
+                    }
+                    Button {} label: {
+                        ZStack {
+                            Image("mic")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 22, height: 21)
+                                .foregroundStyle(Color.greenCustom)
+                        }
+                        .frame(width: 36, height: 36)
+                    }
+                }
             }
+
+            ZStack {
+                if vm.chatText.isEmpty {
+                    DescriptionPlaceholder()
+                        .padding(.horizontal, 8)
+                }
+                TextEditor(text: $vm.chatText)
+                    .scrollContentBackground(.hidden)
+                    .padding(.horizontal, 8)
+            }
+            .background(Color.systemGray5)
+            .clipShape(RoundedRectangle(cornerRadius: 20))
             .frame(height: 40)
 
             Button {
                 vm.handleSend()
             } label: {
-                Text("Send")
-                    .foregroundColor(.white)
+                Button {} label: {
+                    ZStack {
+                        Image(vm.chatText.isEmpty ? "like" : "sent")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(
+                                width: vm.chatText.isEmpty ? 24 : 20,
+                                height: vm.chatText.isEmpty ? 24 : 20
+                            )
+                            .foregroundStyle(Color.greenCustom)
+                            .animation(.interactiveSpring(duration: 0.3), value: vm.chatText.isEmpty)
+                    }
+                    .frame(width: 36, height: 36)
+                }
             }
-            .padding(.horizontal)
-            .padding(.vertical, 8)
-            .background(Color.blue)
-            .cornerRadius(4)
+        }
+        .animation(.easeInOut(duration: 0.3), value: isCollapseButton)
+        .onChange(of: vm.chatText) { _ in
+            isCollapseButton = true
         }
         .padding(.horizontal)
+        .background(Color.systemBackground)
     }
 }
 
@@ -283,10 +390,10 @@ struct MessageView: View {
                             .foregroundStyle(Color.white)
                     }
                     .padding()
-                    .background(Color.blue)
+                    .background(Color.greenCustom)
                     .cornerRadius(8)
                 }
-            //} else {
+            // } else {
                 HStack {
                     HStack {
                         Text(message.text)
@@ -297,7 +404,7 @@ struct MessageView: View {
                     .cornerRadius(8)
                     Spacer()
                 }
-            //}
+            // }
         }
         .padding(.horizontal)
         .padding(.top, 8)
@@ -307,9 +414,9 @@ struct MessageView: View {
 private struct DescriptionPlaceholder: View {
     var body: some View {
         HStack {
-            Text("Description")
-                .foregroundColor(Color(.gray))
-                .font(.system(size: 17))
+            Text("Aa")
+                .font(.body)
+                .foregroundStyle(Color.systemGray)
                 .padding(.leading, 5)
                 .padding(.top, -4)
             Spacer()
@@ -318,5 +425,14 @@ private struct DescriptionPlaceholder: View {
 }
 
 #Preview {
-    RoutingView()
+    NavigationStack {
+        ChatLogView(vm: .init(chatUser: .init(uid: UUID().uuidString, email: "email", name: "Name", profileImageUrl: "https://images.pexels.com/photos/96938/pexels-photo-96938.jpeg?cs=srgb&dl=pexels-francesco-ungaro-96938.jpg&fm=jpg")))
+    }
+}
+
+struct ViewOffsetKey: PreferenceKey {
+    static var defaultValue = CGFloat.zero
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value += nextValue()
+    }
 }

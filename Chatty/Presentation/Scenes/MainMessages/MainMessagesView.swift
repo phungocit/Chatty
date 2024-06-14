@@ -153,8 +153,9 @@ struct MainMessagesView: View {
             .padding(.top, -12)
             .padding([.horizontal, .bottom])
         }
-        .searchable(text: .constant(""), prompt: "Search...")
         .dismissKeyboard()
+        .searchable(text: .constant(""), prompt: "Search")
+        .toolbar(.visible, for: .tabBar)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -187,7 +188,7 @@ struct MainMessagesView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $shouldNavigateToChatLogView) {
             ChatLogView(vm: chatLogViewModel)
-                .environmentObject(routingVM)
+                //.environmentObject(routingVM)
         }
         .actionSheet(isPresented: $shouldShowLogOutOptions) {
             .init(
@@ -213,5 +214,6 @@ struct MainMessagesView: View {
 }
 
 #Preview {
-    RoutingView()
+    TabBarView()
+        .environmentObject(RoutingViewModel())
 }
