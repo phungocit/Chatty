@@ -11,66 +11,71 @@ import SwiftUI
 class ChatLogViewModel: ObservableObject {
     @Published var chatText = ""
     @Published var errorMessage = ""
-
-    @Published var chatMessages: [ChatMessage] = [
-        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
-        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
-        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
-        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
-        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
-        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
-        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
-        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
-        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
-        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
-        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
-        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
-        .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1...100))", timestamp: Date()),
-    ]
+    @Published var count = 0
+    @Published var chatMessages = [ChatMessage]()
+//        = [
+//            .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1 ... 100))", timestamp: Date()),
+//            .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1 ... 100))", timestamp: Date()),
+//            .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1 ... 100))", timestamp: Date()),
+//            .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1 ... 100))", timestamp: Date()),
+//            .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1 ... 100))", timestamp: Date()),
+//            .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1 ... 100))", timestamp: Date()),
+//            .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1 ... 100))", timestamp: Date()),
+//            .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1 ... 100))", timestamp: Date()),
+//            .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1 ... 100))", timestamp: Date()),
+//            .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1 ... 100))", timestamp: Date()),
+//            .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1 ... 100))", timestamp: Date()),
+//            .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1 ... 100))", timestamp: Date()),
+//            .init(fromId: UUID().uuidString, toId: UUID().uuidString, text: "Lorem\(Int.random(in: 1 ... 100))", timestamp: Date()),
+//        ]
 
     var chatUser: ChatUser?
+
+    private var textToSend: String {
+        chatText.isEmpty ? "Like" : chatText
+    }
 
     init(chatUser: ChatUser?) {
         self.chatUser = chatUser
 
-        // fetchMessages()
+        fetchMessages()
     }
 
     var firestoreListener: ListenerRegistration?
 
     func fetchMessages() {
-//        guard let fromId = FirebaseManager.shared.auth.currentUser?.uid else { return }
-//        guard let toId = chatUser?.uid else { return }
-//        firestoreListener?.remove()
-//        chatMessages.removeAll()
-//        firestoreListener = FirebaseManager.shared.firestore
-//            .collection(FirebaseConstants.messages)
-//            .document(fromId)
-//            .collection(toId)
-//            .order(by: FirebaseConstants.timestamp)
-//            .addSnapshotListener { querySnapshot, error in
-//                if let error = error {
-//                    self.errorMessage = "Failed to listen for messages: \(error)"
-//                    print(error)
-//                    return
-//                }
-//
-//                querySnapshot?.documentChanges.forEach { change in
-//                    if change.type == .added {
-//                        do {
-//                            let cm = try change.document.data(as: ChatMessage.self)
-//                            self.chatMessages.append(cm)
-//                            print("Appending chatMessage in ChatLogView: \(Date())")
-//                        } catch {
-//                            print("Failed to decode message: \(error)")
-//                        }
-//                    }
-//                }
-//
-//                DispatchQueue.main.async {
-//                    self.count += 1
-//                }
-//            }
+        guard let fromId = FirebaseManager.shared.auth.currentUser?.uid else { return }
+        guard let toId = chatUser?.uid else { return }
+        firestoreListener?.remove()
+        chatMessages.removeAll()
+        firestoreListener = FirebaseManager.shared.firestore
+            .collection(FirebaseConstants.messages)
+            .document(fromId)
+            .collection(toId)
+            .order(by: FirebaseConstants.timestamp)
+            .addSnapshotListener { querySnapshot, error in
+                if let error = error {
+                    self.errorMessage = "Failed to listen for messages: \(error)"
+                    print(error)
+                    return
+                }
+
+                querySnapshot?.documentChanges.forEach { change in
+                    if change.type == .added {
+                        do {
+                            let cm = try change.document.data(as: ChatMessage.self)
+                            self.chatMessages.append(cm)
+                            print("Appending chatMessage in ChatLogView: \(Date())")
+                        } catch {
+                            print("Failed to decode message: \(error)")
+                        }
+                    }
+                }
+
+                DispatchQueue.main.async {
+                    self.count += 1
+                }
+            }
     }
 
     func handleSend() {
@@ -83,7 +88,7 @@ class ChatLogViewModel: ObservableObject {
             .collection(toId)
             .document()
 
-        let msg = ChatMessage(id: nil, fromId: fromId, toId: toId, text: chatText.isEmpty ? "Like" : chatText, timestamp: Date())
+        let msg = ChatMessage(id: nil, fromId: fromId, toId: toId, text: textToSend, timestamp: Date())
 
         try? document.setData(from: msg) { error in
             if let error = error {
@@ -130,7 +135,7 @@ class ChatLogViewModel: ObservableObject {
 
         let data = [
             FirebaseConstants.timestamp: Timestamp(),
-            FirebaseConstants.text: chatText,
+            FirebaseConstants.text: textToSend,
             FirebaseConstants.fromId: uid,
             FirebaseConstants.toId: toId,
             FirebaseConstants.profileImageUrl: chatUser.profileImageUrl,
@@ -151,7 +156,7 @@ class ChatLogViewModel: ObservableObject {
         guard let currentUser = FirebaseManager.shared.currentUser else { return }
         let recipientRecentMessageDictionary = [
             FirebaseConstants.timestamp: Timestamp(),
-            FirebaseConstants.text: chatText,
+            FirebaseConstants.text: textToSend,
             FirebaseConstants.fromId: uid,
             FirebaseConstants.toId: toId,
             FirebaseConstants.profileImageUrl: currentUser.profileImageUrl,
@@ -171,8 +176,6 @@ class ChatLogViewModel: ObservableObject {
                 }
             }
     }
-
-    @Published var count = 0
 }
 
 struct ChatLogView: View {
@@ -292,7 +295,7 @@ struct ChatLogView: View {
                 }
                 .rotationEffect(.init(degrees: 180))
             } else {
-               HStack(spacing: 4) {
+                HStack(spacing: 4) {
                     Button {} label: {
                         ZStack {
                             Image("more")
@@ -352,20 +355,18 @@ struct ChatLogView: View {
             Button {
                 vm.handleSend()
             } label: {
-                Button {} label: {
-                    ZStack {
-                        Image(vm.chatText.isEmpty ? "like" : "sent")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(
-                                width: vm.chatText.isEmpty ? 24 : 20,
-                                height: vm.chatText.isEmpty ? 24 : 20
-                            )
-                            .foregroundStyle(Color.greenCustom)
-                            .animation(.interactiveSpring(duration: 0.3), value: vm.chatText.isEmpty)
-                    }
-                    .frame(width: 36, height: 36)
+                ZStack {
+                    Image(vm.chatText.isEmpty ? "like" : "sent")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(
+                            width: vm.chatText.isEmpty ? 24 : 20,
+                            height: vm.chatText.isEmpty ? 24 : 20
+                        )
+                        .foregroundStyle(Color.greenCustom)
+                        .animation(.interactiveSpring(duration: 0.3), value: vm.chatText.isEmpty)
                 }
+                .frame(width: 36, height: 36)
             }
         }
         .animation(.easeInOut(duration: 0.3), value: isCollapseButton)
@@ -381,30 +382,28 @@ struct MessageView: View {
     let message: ChatMessage
 
     var body: some View {
-        VStack {
-//            if message.fromId == FirebaseManager.shared.auth.currentUser?.uid {
+        VStack(spacing: 2) {
+            if message.fromId == FirebaseManager.shared.auth.currentUser?.uid {
                 HStack {
                     Spacer()
-                    HStack {
-                        Text(message.text)
-                            .foregroundStyle(Color.white)
-                    }
-                    .padding()
-                    .background(Color.greenCustom)
-                    .cornerRadius(8)
+                    Text(message.text)
+                        .foregroundStyle(Color.white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(Color.greenCustom)
+                        .cornerRadius(8)
                 }
-            // } else {
+            } else {
                 HStack {
-                    HStack {
-                        Text(message.text)
-                            .foregroundStyle(Color.label)
-                    }
-                    .padding()
-                    .background(Color.systemGray5)
-                    .cornerRadius(8)
+                    Text(message.text)
+                        .foregroundStyle(Color.label)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(Color.systemGray5)
+                        .cornerRadius(8)
                     Spacer()
                 }
-            // }
+            }
         }
         .padding(.horizontal)
         .padding(.top, 8)
