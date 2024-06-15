@@ -32,8 +32,8 @@ struct LazyImageView<Content: View>: View {
                     image
                         .resizable()
                 } else {
-//                    Color.systemGray6
-                    Color.random
+                    Color.systemGray6
+                    // Color.random
                         .overlay {
                             // ProgressView()
                         }
