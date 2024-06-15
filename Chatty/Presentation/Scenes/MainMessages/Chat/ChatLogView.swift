@@ -349,7 +349,7 @@ struct ChatLogView: View {
                     .padding(.horizontal, 8)
             }
             .background(Color.systemGray5)
-            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .clipShape(Capsule())
             .frame(height: 40)
 
             Button {
