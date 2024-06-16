@@ -425,7 +425,7 @@ private struct DescriptionPlaceholder: View {
 
 #Preview {
     NavigationStack {
-        ChatLogView(vm: .init(chatUser: .init(uid: UUID().uuidString, email: "email", name: "Name", profileImageUrl: "https://images.pexels.com/photos/96938/pexels-photo-96938.jpeg?cs=srgb&dl=pexels-francesco-ungaro-96938.jpg&fm=jpg")))
+        MainMessagesView()
     }
 }
 
