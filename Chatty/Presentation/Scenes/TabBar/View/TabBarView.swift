@@ -2,31 +2,29 @@
 //  TabBarView.swift
 //  Chatty
 //
-//  Created by Tran Ngoc Phu on 9/6/24.
+//  Created by Phil Tran on 9/6/24.
 //
 
 import SwiftUI
 
 struct TabBarView: View {
-    @EnvironmentObject private var routingVM: RoutingViewModel
+    @StateObject private var profileViewModel = ProfileViewModel()
 
     var body: some View {
         TabView {
-            NavigationStack {
-                MainMessagesView()
-            }
-            .tabItem {
-                Label(Tab.chats.rawValue, image: Tab.chats.image)
-            }
-            .tag(Tab.chats)
+            ChatView()
+                .environmentObject(profileViewModel)
+                .tabItem {
+                    Label(Tab.chats.rawValue, image: Tab.chats.image)
+                }
+                .tag(Tab.chats)
 
-            NavigationStack {
-                PeopleView()
-            }
-            .tabItem {
-                Label(Tab.people.rawValue, image: Tab.people.image)
-            }
-            .tag(Tab.people)
+            PeopleView()
+                .environmentObject(profileViewModel)
+                .tabItem {
+                    Label(Tab.people.rawValue, image: Tab.people.image)
+                }
+                .tag(Tab.people)
         }
         .tint(Color.greenCustom)
     }
@@ -34,7 +32,6 @@ struct TabBarView: View {
 
 #Preview {
     TabBarView()
-        .environmentObject(RoutingViewModel())
 }
 
 enum Tab: String {
