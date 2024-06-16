@@ -10,11 +10,11 @@ import SwiftUI
 
 @main
 struct ChattyApp: App {
-    init() {}
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     var body: some Scene {
         WindowGroup {
-            RoutingView()
+            RootView()
         }
     }
 }
