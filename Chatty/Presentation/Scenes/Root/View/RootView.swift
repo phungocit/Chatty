@@ -1,14 +1,14 @@
 //
-//  RoutingView.swift
+//  RootView.swift
 //  Chatty
 //
-//  Created by Phil Tran on 8/6/24.
+//  Created by Phil Tran on 16/6/24.
 //
 
 import SwiftUI
 
-struct RoutingView: View {
-    @StateObject private var routingVM = RoutingViewModel()
+struct RootView: View {
+    @StateObject private var viewModel = RootViewModel()
     @State private var isLaunchViewLoading = true
 
     var body: some View {
@@ -19,19 +19,14 @@ struct RoutingView: View {
                         isLaunchViewLoading = false
                     }
                 }
+        } else if viewModel.userSession != nil {
+            TabBarView()
         } else {
-            Group {
-                if routingVM.isLoggedIn {
-                    TabBarView()
-                } else {
-                    OnBoardingView()
-                }
-            }
-            .environmentObject(routingVM)
+            OnBoardingView()
         }
     }
 }
 
 #Preview {
-    RoutingView()
+    RootView()
 }
