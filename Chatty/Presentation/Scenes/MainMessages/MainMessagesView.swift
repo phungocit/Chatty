@@ -94,6 +94,7 @@ class MainMessagesViewModel: ObservableObject {
 struct MainMessagesView: View {
     @EnvironmentObject private var routingVM: RoutingViewModel
     @StateObject private var vm = MainMessagesViewModel()
+    @StateObject private var viewModel = ChatViewModel()
     @State private var shouldShowLogOutOptions = false
     @State private var shouldNavigateToChatLogView = false
     @State private var shouldShowNewMessageScreen = false
@@ -102,105 +103,108 @@ struct MainMessagesView: View {
     private var chatLogViewModel = ChatLogViewModel(chatUser: nil)
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                ForEach(vm.recentMessages) { recentMessage in
-                    Button {
-                        let uid = recentMessage.isFromCurrentUser ? recentMessage.toId : recentMessage.fromId
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 0) {
+                    ForEach(vm.recentMessages) { recentMessage in
+                        Button {
+                            let uid = recentMessage.isFromCurrentUser ? recentMessage.toId : recentMessage.fromId
 
-                        chatUser = .init(id: uid, uid: uid, email: recentMessage.email, name: recentMessage.name, profileImageUrl: recentMessage.profileImageUrl)
+                            chatUser = .init(id: uid, uid: uid, email: recentMessage.email, name: recentMessage.name, profileImageUrl: recentMessage.profileImageUrl)
 
-                        chatLogViewModel.chatUser = chatUser
-                        chatLogViewModel.fetchMessages()
-                        shouldNavigateToChatLogView.toggle()
-                    } label: {
-                        HStack(spacing: 12) {
-                            LazyImageView(url: recentMessage.profileImageUrl)
-                                .scaledToFill()
-                                .frame(width: 60, height: 60)
-                                .clipShape(Circle())
+                            chatLogViewModel.chatUser = chatUser
+                            chatLogViewModel.fetchMessages()
+                            shouldNavigateToChatLogView.toggle()
+                        } label: {
+                            HStack(spacing: 12) {
+                                LazyImageView(url: recentMessage.profileImageUrl)
+                                    .scaledToFill()
+                                    .frame(width: 60, height: 60)
+                                    .clipShape(Circle())
 
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(recentMessage.name)
-                                    .font(.body)
-                                    .fontWeight(.medium)
-                                    .foregroundStyle(Color.label)
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(recentMessage.name)
+                                        .font(.body)
+                                        .fontWeight(.medium)
+                                        .foregroundStyle(Color.label)
+                                        .lineLimit(1)
+                                    Text((recentMessage.isFromCurrentUser ? "You: " : "") + recentMessage.text)
+                                        .font(.subheadline)
+                                        .lineLimit(1)
+                                        .foregroundStyle(Color.systemGray)
+                                }
+                                Spacer()
+                                Text(recentMessage.timeAgo)
+                                    .font(.footnote)
                                     .lineLimit(1)
-                                Text((recentMessage.isFromCurrentUser ? "You: " : "") + recentMessage.text)
-                                    .font(.subheadline)
-                                    .lineLimit(1)
-                                    .foregroundStyle(Color.systemGray)
+                                    .foregroundColor(Color.systemGray)
                             }
-                            Spacer()
-                            Text(recentMessage.timeAgo)
-                                .font(.footnote)
-                                .lineLimit(1)
-                                .foregroundColor(Color.systemGray)
                         }
+                        .padding(.vertical, 12)
                     }
-                    .padding(.vertical, 12)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.systemBackground)
+                .padding(.top, -12)
+                .padding([.horizontal, .bottom])
+            }
+            .dismissKeyboard()
+            .searchable(text: .constant(""), prompt: "Search")
+            .toolbar(.visible, for: .tabBar)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        shouldShowLogOutOptions.toggle()
+                    } label: {
+                        LazyImageView(url: vm.chatUser?.profileImageUrl)
+                            .scaledToFill()
+                            .frame(width: 32, height: 32)
+                            .clipShape(Circle())
+                    }
+                }
+                ToolbarItem(placement: .principal) {
+                    Text("Chats")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color.label)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        shouldShowNewMessageScreen.toggle()
+                    } label: {
+                        Image("new-message")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                            .foregroundStyle(Color.greenCustom)
+                    }
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.systemBackground)
-            .padding(.top, -12)
-            .padding([.horizontal, .bottom])
-        }
-        .dismissKeyboard()
-        .searchable(text: .constant(""), prompt: "Search")
-        .toolbar(.visible, for: .tabBar)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    shouldShowLogOutOptions.toggle()
-                } label: {
-                    LazyImageView(url: vm.chatUser?.profileImageUrl)
-                        .scaledToFill()
-                        .frame(width: 32, height: 32)
-                        .clipShape(Circle())
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(isPresented: $shouldNavigateToChatLogView) {
+                ChatLogView(vm: chatLogViewModel)
+                // .environmentObject(routingVM)
+            }
+            .actionSheet(isPresented: $shouldShowLogOutOptions) {
+                .init(
+                    title: Text("Settings"),
+                    message: Text("What do you want to do?"),
+                    buttons: [
+                        .destructive(Text("Sign Out")) {
+//                            routingVM.handleSignOut()
+                            AuthService.shared.signOut()
+                        },
+                        .cancel(),
+                    ]
+                )
+            }
+            .sheet(isPresented: $shouldShowNewMessageScreen) {
+                CreateNewMessageView { user in
+                    shouldNavigateToChatLogView.toggle()
+                    chatUser = user
+                    chatLogViewModel.chatUser = user
+                    chatLogViewModel.fetchMessages()
                 }
-            }
-            ToolbarItem(placement: .principal) {
-                Text("Chats")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundStyle(Color.label)
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    shouldShowNewMessageScreen.toggle()
-                } label: {
-                    Image("new-message")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20, height: 20)
-                        .foregroundStyle(Color.greenCustom)
-                }
-            }
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationDestination(isPresented: $shouldNavigateToChatLogView) {
-            ChatLogView(vm: chatLogViewModel)
-            // .environmentObject(routingVM)
-        }
-        .actionSheet(isPresented: $shouldShowLogOutOptions) {
-            .init(
-                title: Text("Settings"),
-                message: Text("What do you want to do?"),
-                buttons: [
-                    .destructive(Text("Sign Out")) {
-                        routingVM.handleSignOut()
-                    },
-                    .cancel(),
-                ]
-            )
-        }
-        .sheet(isPresented: $shouldShowNewMessageScreen) {
-            CreateNewMessageView { user in
-                shouldNavigateToChatLogView.toggle()
-                chatUser = user
-                chatLogViewModel.chatUser = user
-                chatLogViewModel.fetchMessages()
             }
         }
     }
