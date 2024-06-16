@@ -2,7 +2,7 @@
 //  OnBoardingView.swift
 //  Chatty
 //
-//  Created by Tran Ngoc Phu on 7/6/24.
+//  Created by Phil Tran on 7/6/24.
 //
 
 import SwiftUI
@@ -11,7 +11,7 @@ struct OnBoardingView: View {
     @EnvironmentObject private var routingVM: RoutingViewModel
 
     var body: some View {
-        NavigationStack(path: $routingVM.authenPath) {
+        NavigationStack {
             ScrollView {
                 VStack(spacing: 0) {
                     VStack(alignment: .leading, spacing: 16) {
@@ -40,16 +40,24 @@ struct OnBoardingView: View {
                                 .frame(height: 1)
                         }
                         .padding(.horizontal, 6)
-                        NavigationLink(value: RoutingPath.signUp) {
+                        NavigationLink {
+                            SignUpView()
+                        } label: {
                             PrimaryButtonContentView(text: "Sign up with Email")
                         }
+//
+//                        NavigationLink(value: RoutingPath.signUp) {
+//                            PrimaryButtonContentView(text: "Sign up with Email")
+//                        }
                     }
                     .padding(.top, 20)
                     HStack(spacing: 0) {
                         Text("Existing account?")
                             .foregroundStyle(Color.systemGray)
                             .font(.callout)
-                        NavigationLink(value: RoutingPath.logIn) {
+                        NavigationLink {
+                            SignInView()
+                        } label: {
                             Text(" Log in")
                                 .font(.callout)
                                 .fontWeight(.medium)
@@ -79,7 +87,7 @@ struct OnBoardingView: View {
             }
             .navigationBarBackButtonHidden()
             .navigationBarTitleDisplayMode(.inline)
-            .navigationPath(routingVM)
+//            .navigationPath(routingVM)
         }
     }
 }
