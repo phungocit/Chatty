@@ -2,7 +2,7 @@
 //  LazyImageView.swift
 //  Chatty
 //
-//  Created by Tran Ngoc Phu on 8/6/24.
+//  Created by Phil Tran on 8/6/24.
 //
 
 import NukeUI
@@ -33,7 +33,7 @@ struct LazyImageView<Content: View>: View {
                         .resizable()
                 } else {
                     Color.systemGray6
-                    // Color.random
+                        // Color.random
                         .overlay {
                             // ProgressView()
                         }

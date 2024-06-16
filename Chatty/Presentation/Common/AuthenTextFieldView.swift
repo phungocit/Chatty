@@ -2,7 +2,7 @@
 //  AuthenTextFieldView.swift
 //  Chatty
 //
-//  Created by Tran Ngoc Phu on 7/6/24.
+//  Created by Phil Tran on 7/6/24.
 //
 
 import SwiftUI
