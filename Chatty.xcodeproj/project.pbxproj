@@ -62,7 +62,6 @@
 		47DA30B72C1EC4DB00E80E1F /* NewMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA30B62C1EC4DB00E80E1F /* NewMessage.swift */; };
 		47DA30BC2C1EC78600E80E1F /* InboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA30BB2C1EC78600E80E1F /* InboxView.swift */; };
 		47DA30BE2C1EC79300E80E1F /* InboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA30BD2C1EC79300E80E1F /* InboxViewModel.swift */; };
-		47DA30C02C1ECC2400E80E1F /* InboxBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA30BF2C1ECC2400E80E1F /* InboxBubble.swift */; };
 		47DA30C62C1ED9AC00E80E1F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA30C12C1ED9AC00E80E1F /* ProfileView.swift */; };
 		47DA30C72C1ED9AC00E80E1F /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA30C32C1ED9AC00E80E1F /* ProfileViewModel.swift */; };
 		47DA30C92C1EEED800E80E1F /* UIEmojiTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA30C82C1EEED800E80E1F /* UIEmojiTextView.swift */; };
@@ -132,7 +131,6 @@
 		47DA30B62C1EC4DB00E80E1F /* NewMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessage.swift; sourceTree = "<group>"; };
 		47DA30BB2C1EC78600E80E1F /* InboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
 		47DA30BD2C1EC79300E80E1F /* InboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxViewModel.swift; sourceTree = "<group>"; };
-		47DA30BF2C1ECC2400E80E1F /* InboxBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxBubble.swift; sourceTree = "<group>"; };
 		47DA30C12C1ED9AC00E80E1F /* ProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		47DA30C32C1ED9AC00E80E1F /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		47DA30C82C1EEED800E80E1F /* UIEmojiTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIEmojiTextView.swift; sourceTree = "<group>"; };
@@ -511,7 +509,6 @@
 			isa = PBXGroup;
 			children = (
 				47DA30BB2C1EC78600E80E1F /* InboxView.swift */,
-				47DA30BF2C1ECC2400E80E1F /* InboxBubble.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -747,7 +744,6 @@
 				C716EC8527405AF000C49CE8 /* MainMessagesView.swift in Sources */,
 				475447F22C144C1100BC7370 /* LaunchView.swift in Sources */,
 				47A6308D2C12C50900F3982A /* OnBoardingView.swift in Sources */,
-				47DA30C02C1ECC2400E80E1F /* InboxBubble.swift in Sources */,
 				C716EC88274310A400C49CE8 /* FirebaseManager.swift in Sources */,
 				47DA30C72C1ED9AC00E80E1F /* ProfileViewModel.swift in Sources */,
 				47DA30AD2C1EA0C500E80E1F /* ChatViewModel.swift in Sources */,

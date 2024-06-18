@@ -31,6 +31,8 @@ final class ChatViewModel: ObservableObject {
 
     private func loadInitialMessages(fromChanges changes: [DocumentChange]) {
         var messages = changes.compactMap { try? $0.document.data(as: Message.self) }
+
+        print(messages.map { [$0.user?.fullName, Calendar.current.startOfDay(for: $0.timestamp.dateValue())] })
         for i in 0 ..< messages.count {
             let message = messages[i]
             UserService.fetchUser(withUid: message.chatPartnerId) { user in

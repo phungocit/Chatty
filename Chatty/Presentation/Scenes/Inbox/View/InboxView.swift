@@ -9,15 +9,21 @@ import AVKit
 import SwiftUI
 
 struct InboxView: View {
-    @ObservedObject var viewModel: InboxViewModel
+    @StateObject var viewModel: InboxViewModel
 
+    @StateObject private var soundManager = SoundManager()
     @Environment(\.dismiss) private var dismiss
-    @State private var tabBarVisibility = Visibility.hidden
+    @FocusState private var isFocused: Bool
     @State private var isShowMediaPicker = false
     @State private var isShowCameraView = false
     @State private var isShowVideoPicker = false
     @State private var isScrollToFirst = false
     @State private var isCollapseButton = false
+    @State private var tabBarVisibility = Visibility.hidden
+    @State private var selectedMessage: Message?
+    @State private var selectedPlayer = AVPlayer()
+    @State private var isFullScreen = false
+
     private let scrollNamespace = "scroll"
 
     private let dateFormatter: DateFormatter = {
@@ -29,8 +35,56 @@ struct InboxView: View {
 
     static let emptyScrollToString = "Empty"
 
+    init(user: User) {
+        _viewModel = .init(wrappedValue: .init(user: user))
+    }
+
     var body: some View {
         messagesView
+            .fullScreenCover(item: $selectedMessage) { value in
+                ZStack {
+                    LazyImageView(url: value.messageText)
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .overlay(alignment: .topTrailing) {
+                    Button {
+                        selectedMessage = nil
+                    } label: {
+                        ZStack {
+                            Image("close")
+                                .resizable()
+                                .frame(width: 16, height: 16)
+                                .foregroundStyle(Color.white)
+                        }
+                        .frame(width: 32, height: 32)
+                    }
+                }
+            }
+            .fullScreenCover(isPresented: $isFullScreen) {
+                ZStack {
+                    VideoPlayer(player: selectedPlayer)
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .padding()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .overlay(alignment: .topTrailing) {
+                    Button {
+                        isFullScreen = false
+                    } label: {
+                        ZStack {
+                            Image("close")
+                                .resizable()
+                                .frame(width: 16, height: 16)
+                                .foregroundStyle(Color.white)
+                        }
+                        .frame(width: 32, height: 32)
+                    }
+                }
+            }
             .background(Color.systemBackground)
             .dismissKeyboard()
             .navigationTitle("")
@@ -102,11 +156,11 @@ struct InboxView: View {
     private var messagesView: some View {
         ScrollView {
             ScrollViewReader { scrollViewProxy in
-                VStack {
+                LazyVStack {
                     ForEach(viewModel.messageGroups) { group in
                         Section {
                             ForEach(group.messages) { message in
-                                InboxMessage(message: message)
+                                inboxMessage(message)
                                     .id(message.id)
                             }
                         } header: {
@@ -114,6 +168,7 @@ struct InboxView: View {
                                 .font(.footnote)
                                 .foregroundStyle(Color.label)
                         }
+                        .id(group.id)
                     }
                     HStack {
                         Spacer()
@@ -142,57 +197,68 @@ struct InboxView: View {
 
     private var chatBottomBar: some View {
         HStack(spacing: 12) {
-            if isCollapseButton {
-                BackButton {
-                    isCollapseButton = false
+            HStack(spacing: 4) {
+                if !isCollapseButton {
+                    HStack(spacing: 4) {
+                        Button {} label: {
+                            ZStack {
+                                Image("more")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20, height: 20)
+                                    .foregroundStyle(Color.greenCustom)
+                            }
+                            .frame(width: 36, height: 36)
+                        }
+                        Button {
+                            // isShowCameraView.toggle()
+                        } label: {
+                            ZStack {
+                                Image("camera")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 23, height: 23)
+                                    .foregroundStyle(Color.greenCustom)
+                            }
+                            .frame(width: 36, height: 36)
+                        }
+                        Button {
+                            isShowMediaPicker.toggle()
+                        } label: {
+                            ZStack {
+                                Image("photo")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 21, height: 21)
+                                    .foregroundStyle(Color.greenCustom)
+                            }
+                            .frame(width: 36, height: 36)
+                        }
+                    }
+                    .transition(
+                        .asymmetric(
+                            insertion: .move(edge: isCollapseButton ? .trailing : .leading),
+                            removal: .move(edge: isCollapseButton ? .trailing : .leading)
+                        )
+                    )
                 }
-                .rotationEffect(.init(degrees: 180))
-            } else {
-                HStack(spacing: 4) {
-                    Button {} label: {
-                        ZStack {
-                            Image("more")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 20, height: 20)
-                                .foregroundStyle(Color.greenCustom)
+                Button {
+                    if isCollapseButton {
+                        withAnimation {
+                            isCollapseButton = false
                         }
-                        .frame(width: 36, height: 36)
+                    } else {
+                        // mic action
                     }
-                    Button {
-                        isShowCameraView.toggle()
-                    } label: {
-                        ZStack {
-                            Image("camera")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 23, height: 23)
-                                .foregroundStyle(Color.greenCustom)
-                        }
-                        .frame(width: 36, height: 36)
+                } label: {
+                    ZStack {
+                        Image(isCollapseButton ? "collapse" : "mic")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: isCollapseButton ? 9 : 22, height: isCollapseButton ? 16 : 21)
+                            .foregroundStyle(Color.greenCustom)
                     }
-                    Button {
-                        isShowMediaPicker.toggle()
-                    } label: {
-                        ZStack {
-                            Image("photo")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 21, height: 21)
-                                .foregroundStyle(Color.greenCustom)
-                        }
-                        .frame(width: 36, height: 36)
-                    }
-                    Button {} label: {
-                        ZStack {
-                            Image("mic")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 22, height: 21)
-                                .foregroundStyle(Color.greenCustom)
-                        }
-                        .frame(width: 36, height: 36)
-                    }
+                    .frame(width: isCollapseButton ? 22 : 36, height: isCollapseButton ? 22 : 36)
                 }
             }
 
@@ -207,8 +273,9 @@ struct InboxView: View {
                     .padding(.leading, 4)
                 }
                 HStack {
-//                    EmojiTextView(text: $viewModel.messageText, isEmoji: $viewModel.isEmoji)
+                    //                    EmojiTextView(text: $viewModel.messageText, isEmoji: $viewModel.isEmoji)
                     TextEditor(text: $viewModel.messageText)
+                        .focused($isFocused)
                         .scrollContentBackground(.hidden)
                         .padding(.top, 2)
                     Button {
@@ -236,31 +303,33 @@ struct InboxView: View {
                             height: viewModel.messageText.isEmpty ? 24 : 20
                         )
                         .foregroundStyle(Color.greenCustom)
-                        .animation(.interactiveSpring(duration: 0.3), value: viewModel.messageText.isEmpty)
+                        .animation(.interactiveSpring(duration: 0.25), value: viewModel.messageText.isEmpty)
                 }
                 .frame(width: 36, height: 36)
             }
         }
-        .animation(.easeInOut(duration: 0.3), value: isCollapseButton)
+        .onChange(of: isFocused) { newValue in
+            withAnimation {
+                isCollapseButton = newValue
+            }
+        }
         .onChange(of: viewModel.messageText) { _ in
-            isCollapseButton = true
+            if !isCollapseButton, isFocused {
+                withAnimation {
+                    isCollapseButton = true
+                }
+            }
         }
         .padding(.horizontal)
         .background(Color.systemBackground)
     }
-}
 
-struct InboxMessage: View {
-    let message: Message
-
-    @StateObject private var soundManager = SoundManager()
-
-    var body: some View {
+    func inboxMessage(_ message: Message) -> some View {
         VStack(spacing: 2) {
             if message.isFromCurrentUser {
                 HStack {
                     Spacer()
-                    messageContent
+                    messageContent(message)
                         .clipShape(
                             .rect(
                                 topLeadingRadius: 16,
@@ -276,7 +345,7 @@ struct InboxMessage: View {
                         .scaledToFill()
                         .frame(width: 28, height: 28)
                         .clipShape(Circle())
-                    messageContent
+                    messageContent(message)
                         .clipShape(
                             .rect(
                                 topLeadingRadius: 16,
@@ -293,20 +362,38 @@ struct InboxMessage: View {
         .padding(.top, 8)
     }
 
-    var messageContent: some View {
+    func messageContent(_ message: Message) -> some View {
         Group {
             if message.isImage ?? false {
                 LazyImageView(url: message.messageText)
                     .scaledToFit()
-                    .frame(height: 120)
+                    .frame(maxWidth: 250)
+                    .onTapGesture {
+                        selectedMessage = message
+                    }
             } else if message.isVideo ?? false, let url = URL(string: message.messageText) {
-                VideoPlayer(player: AVPlayer(url: url))
-                    .scaledToFit()
-                    .frame(height: 200)
+                let aaa = AVPlayer(url: url)
+                VideoPlayer(player: aaa) {
+                    VStack {
+                        HStack {
+                            Spacer()
+                            Image(systemName: "arrow.up.left.and.arrow.down.right")
+                                .padding(16)
+                                .foregroundStyle(.white)
+                                .onTapGesture {
+                                    selectedPlayer = aaa
+                                    isFullScreen = true
+                                }
+                        }
+                        Spacer()
+                    }
+                }
+                .scaledToFit()
+                .frame(maxWidth: 250)
             } else if message.isAudio ?? false {
                 Button {
                     Task {
-                        try await playAudio()
+                        try await playAudio(url: message.messageText)
                     }
                 } label: {
                     Image(systemName: "play.fill")
@@ -325,8 +412,8 @@ struct InboxMessage: View {
         }
     }
 
-    func playAudio() async throws {
-        guard let audioURL = URL(string: message.messageText) else {
+    func playAudio(url: String) async throws {
+        guard let audioURL = URL(string: url) else {
             print("Audio URL not found or invalid")
             return
         }
