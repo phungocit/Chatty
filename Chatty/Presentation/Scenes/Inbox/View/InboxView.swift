@@ -57,9 +57,10 @@ struct InboxView: View {
                             Image("close")
                                 .resizable()
                                 .frame(width: 16, height: 16)
-                                .foregroundStyle(Color.white)
+                                .foregroundStyle(Color.label)
                         }
                         .frame(width: 32, height: 32)
+                        .padding()
                     }
                 }
             }
@@ -79,9 +80,10 @@ struct InboxView: View {
                             Image("close")
                                 .resizable()
                                 .frame(width: 16, height: 16)
-                                .foregroundStyle(Color.white)
+                                .foregroundStyle(Color.label)
                         }
                         .frame(width: 32, height: 32)
+                        .padding()
                     }
                 }
             }
@@ -460,5 +462,5 @@ private struct DescriptionPlaceholder: View {
 }
 
 #Preview {
-    RoutingView()
+    RootView()
 }

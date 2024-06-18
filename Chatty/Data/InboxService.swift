@@ -16,8 +16,7 @@ class InboxService {
         let query = FirestoreConstants.messageCollection
             .document(uid)
             .collection(CollectionPath.latestMessages)
-            .order(by: "timestamp")
-//            .order(by: "timestamp", descending: true)
+            // .order(by: "timestamp", descending: true)
         query.addSnapshotListener { snapshot, _ in
             guard let changes = snapshot?.documentChanges.filter({
                 $0.type == .added || $0.type == .modified
