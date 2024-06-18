@@ -17,6 +17,7 @@ class ChatService {
         self.chatPartner = chatPartner
     }
 
+    @MainActor
     func sendMessage(_ messageText: String, isImage: Bool?, isVideo: Bool?, isAudio: Bool?) {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         let chatPartnerId = chatPartner.id
@@ -36,10 +37,15 @@ class ChatService {
     @MainActor
     func observeMessages(completion: @escaping ([Message]) -> Void) {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        let query = FirestoreConstants.messageCollection.document(currentUid).collection(chatPartner.id).order(by: "timestamp", descending: false)
+        let query = FirestoreConstants.messageCollection
+            .document(currentUid)
+            .collection(chatPartner.id)
+            .order(by: "timestamp", descending: false)
         query.addSnapshotListener { snapshot, _ in
             guard let changes = snapshot?.documentChanges.filter({ $0.type == .added }) else { return }
-            var messages = changes.compactMap { try? $0.document.data(as: Message.self) }
+            var messages = changes.compactMap {
+                try? $0.document.data(as: Message.self)
+            }
             for (index, message) in messages.enumerated() where !message.isFromCurrentUser {
                 messages[index].user = self.chatPartner
             }

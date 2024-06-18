@@ -13,7 +13,11 @@ class InboxService {
 
     func observeLatestMessages() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        let query = FirestoreConstants.messageCollection.document(uid).collection(CollectionPath.latestMessages).order(by: "timestamp", descending: true)
+        let query = FirestoreConstants.messageCollection
+            .document(uid)
+            .collection(CollectionPath.latestMessages)
+            .order(by: "timestamp")
+//            .order(by: "timestamp", descending: true)
         query.addSnapshotListener { snapshot, _ in
             guard let changes = snapshot?.documentChanges.filter({
                 $0.type == .added || $0.type == .modified

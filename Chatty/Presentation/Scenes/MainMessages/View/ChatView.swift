@@ -101,8 +101,7 @@ struct ChatView: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(isPresented: $isPushToInboxView) {
                 if let selectedUser {
-                    let viewModel = InboxViewModel(user: selectedUser)
-                    InboxView(viewModel: viewModel)
+                    InboxView(user: selectedUser)
                 }
             }
             .fullScreenCover(

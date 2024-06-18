@@ -20,7 +20,6 @@ class InboxViewModel: ObservableObject {
     @Published var audioRecorder: AVAudioRecorder!
     @Published var recordingURL: URL?
     @Published var messageGroups = [MessageGroup]()
-//    @Published var messageImage = Image("")
     @Published var createVideoUrl: URL?
 
     @Published var selectedMedia: PhotosPickerItem? {
@@ -30,14 +29,6 @@ class InboxViewModel: ObservableObject {
             }
         }
     }
-
-    @Published var selectedVideo: PhotosPickerItem?
-//        didSet {
-//            Task {
-//                await loadVideo()
-//            }
-//        }
-//    }
 
     let user: User
     let service: ChatService
@@ -60,17 +51,17 @@ class InboxViewModel: ObservableObject {
 
     @MainActor
     func observeMessages() {
-        service.observeMessages { messages in
-            let groupedMessages = self.groupMessagesByDate(messages: messages)
+        service.observeMessages { [weak self] messages in
+            let groupedMessages = self?.groupMessagesByDate(messages: messages) ?? []
 
             DispatchQueue.main.async {
                 for group in groupedMessages {
-                    if let existingGroupIndex = self.messageGroups.firstIndex(where: { $0.date == group.date }) {
-                        self.messageGroups[existingGroupIndex].messages.append(contentsOf: group.messages)
+                    if let existingGroupIndex = self?.messageGroups.firstIndex(where: { $0.date == group.date }) {
+                        self?.messageGroups[existingGroupIndex].messages.append(contentsOf: group.messages)
                     } else {
-                        self.messageGroups.append(group)
+                        self?.messageGroups.append(group)
                     }
-                    self.count += 1
+                    self?.count += 1
                 }
             }
         }
@@ -127,7 +118,6 @@ private extension InboxViewModel {
 
         if let uiImage = UIImage(data: data) {
             self.uiImage = uiImage
-//            messageImage = Image(uiImage: uiImage)
             do {
                 try await updateMessageImage()
             } catch {
@@ -142,19 +132,6 @@ private extension InboxViewModel {
             }
         }
     }
-
-//    func loadImage(fromItem item: PhotosPickerItem?) async {
-//        guard let item = item else { return }
-//        guard let data = try? await item.loadTransferable(type: Data.self) else { return }
-//        guard let uiImage = UIImage(data: data) else { return }
-//        self.uiImage = uiImage
-//        messageImage = Image(uiImage: uiImage)
-//        do {
-//            try await updateMessageImage()
-//        } catch {
-//            print("Failed to sent image:", error)
-//        }
-//    }
 
     func updateMessageImage() async throws {
         guard let image = uiImage else { return }
