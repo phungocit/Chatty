@@ -45,8 +45,8 @@
 		47DA30842C1E896000E80E1F /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA30832C1E896000E80E1F /* Date+.swift */; };
 		47DA30872C1E89A200E80E1F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA30862C1E89A200E80E1F /* Constants.swift */; };
 		47DA30892C1E8A2B00E80E1F /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA30882C1E8A2B00E80E1F /* UserService.swift */; };
-		47DA308B2C1E8A9E00E80E1F /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA308A2C1E8A9E00E80E1F /* ChatService.swift */; };
-		47DA308D2C1E8C9300E80E1F /* InboxService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA308C2C1E8C9300E80E1F /* InboxService.swift */; };
+		47DA308B2C1E8A9E00E80E1F /* InboxService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA308A2C1E8A9E00E80E1F /* InboxService.swift */; };
+		47DA308D2C1E8C9300E80E1F /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA308C2C1E8C9300E80E1F /* ChatService.swift */; };
 		47DA308F2C1E8CB700E80E1F /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA308E2C1E8CB700E80E1F /* ImageService.swift */; };
 		47DA30912C1E8D6B00E80E1F /* VideoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA30902C1E8D6B00E80E1F /* VideoService.swift */; };
 		47DA30932C1E8DD900E80E1F /* AudioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA30922C1E8DD900E80E1F /* AudioService.swift */; };
@@ -66,6 +66,7 @@
 		47DA30C72C1ED9AC00E80E1F /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA30C32C1ED9AC00E80E1F /* ProfileViewModel.swift */; };
 		47DA30C92C1EEED800E80E1F /* UIEmojiTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DA30C82C1EEED800E80E1F /* UIEmojiTextView.swift */; };
 		AD557CFF2C193BC40083C7B0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AD557CFE2C193BC40083C7B0 /* GoogleService-Info.plist */; };
+		ADE215562C22C6BE0029416F /* Agrume in Frameworks */ = {isa = PBXBuildFile; productRef = ADE215552C22C6BE0029416F /* Agrume */; };
 		C716EC8527405AF000C49CE8 /* MainMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C716EC8427405AF000C49CE8 /* MainMessagesView.swift */; };
 		C716EC88274310A400C49CE8 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C716EC87274310A400C49CE8 /* FirebaseManager.swift */; };
 		C716EC8E27442D2800C49CE8 /* ChatUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C716EC8D27442D2800C49CE8 /* ChatUser.swift */; };
@@ -113,8 +114,8 @@
 		47DA30832C1E896000E80E1F /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		47DA30862C1E89A200E80E1F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		47DA30882C1E8A2B00E80E1F /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
-		47DA308A2C1E8A9E00E80E1F /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
-		47DA308C2C1E8C9300E80E1F /* InboxService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxService.swift; sourceTree = "<group>"; };
+		47DA308A2C1E8A9E00E80E1F /* InboxService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxService.swift; sourceTree = "<group>"; };
+		47DA308C2C1E8C9300E80E1F /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		47DA308E2C1E8CB700E80E1F /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
 		47DA30902C1E8D6B00E80E1F /* VideoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoService.swift; sourceTree = "<group>"; };
 		47DA30922C1E8DD900E80E1F /* AudioService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioService.swift; sourceTree = "<group>"; };
@@ -159,6 +160,7 @@
 				476D3EA92C11B3A00025B9F5 /* FirebaseFirestore in Frameworks */,
 				476D3EB12C11B46D0025B9F5 /* FirebaseStorage in Frameworks */,
 				476D3EAF2C11B45D0025B9F5 /* FirebaseFirestoreSwift in Frameworks */,
+				ADE215562C22C6BE0029416F /* Agrume in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,8 +245,8 @@
 			isa = PBXGroup;
 			children = (
 				47DA30882C1E8A2B00E80E1F /* UserService.swift */,
-				47DA308A2C1E8A9E00E80E1F /* ChatService.swift */,
-				47DA308C2C1E8C9300E80E1F /* InboxService.swift */,
+				47DA308A2C1E8A9E00E80E1F /* InboxService.swift */,
+				47DA308C2C1E8C9300E80E1F /* ChatService.swift */,
 				47DA308E2C1E8CB700E80E1F /* ImageService.swift */,
 				47DA30902C1E8D6B00E80E1F /* VideoService.swift */,
 				47DA30922C1E8DD900E80E1F /* AudioService.swift */,
@@ -652,6 +654,7 @@
 				476D3EAE2C11B45D0025B9F5 /* FirebaseFirestoreSwift */,
 				476D3EB02C11B46D0025B9F5 /* FirebaseStorage */,
 				470A2E1A2C1492F6001E6B2E /* NukeUI */,
+				ADE215552C22C6BE0029416F /* Agrume */,
 			);
 			productName = Chatty;
 			productReference = C7EDFBF22724DE1B0041EC95 /* Chatty.app */;
@@ -684,6 +687,7 @@
 			packageReferences = (
 				476D3EA52C11B3A00025B9F5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				470A2E192C1492F6001E6B2E /* XCRemoteSwiftPackageReference "Nuke" */,
+				ADE215542C22C6BE0029416F /* XCRemoteSwiftPackageReference "Agrume" */,
 			);
 			productRefGroup = C7EDFBF32724DE1B0041EC95 /* Products */;
 			projectDirPath = "";
@@ -725,7 +729,7 @@
 				C716EC942746F40C00C49CE8 /* ChatLogView.swift in Sources */,
 				472BB8EB2C13095C00DB00B7 /* PrimaryButtonContentView.swift in Sources */,
 				47DA308F2C1E8CB700E80E1F /* ImageService.swift in Sources */,
-				47DA308B2C1E8A9E00E80E1F /* ChatService.swift in Sources */,
+				47DA308B2C1E8A9E00E80E1F /* InboxService.swift in Sources */,
 				476D3EA22C11B2650025B9F5 /* ChattyApp.swift in Sources */,
 				479D65F52C153DAC0073B9B1 /* TabBarView.swift in Sources */,
 				475447EE2C14365F00BC7370 /* View+.swift in Sources */,
@@ -764,7 +768,7 @@
 				475447E32C13F9FD00BC7370 /* SocialAccountView.swift in Sources */,
 				47C7D44D2C1F1FE20088FB47 /* CameraManager.swift in Sources */,
 				473AE7982C12B84B005B5D86 /* Color+.swift in Sources */,
-				47DA308D2C1E8C9300E80E1F /* InboxService.swift in Sources */,
+				47DA308D2C1E8C9300E80E1F /* ChatService.swift in Sources */,
 				472BB8ED2C130DEF00DB00B7 /* AuthenTextFieldView.swift in Sources */,
 				47DA30952C1E8E4200E80E1F /* AuthService.swift in Sources */,
 				47DA30B72C1EC4DB00E80E1F /* NewMessage.swift in Sources */,
@@ -1010,6 +1014,14 @@
 				minimumVersion = 10.27.0;
 			};
 		};
+		ADE215542C22C6BE0029416F /* XCRemoteSwiftPackageReference "Agrume" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JanGorman/Agrume";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.8.10;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1037,6 +1049,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 476D3EA52C11B3A00025B9F5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		ADE215552C22C6BE0029416F /* Agrume */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ADE215542C22C6BE0029416F /* XCRemoteSwiftPackageReference "Agrume" */;
+			productName = Agrume;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

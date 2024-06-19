@@ -31,7 +31,7 @@ class InboxViewModel: ObservableObject {
     }
 
     let user: User
-    let service: ChatService
+    let service: InboxService
 
     private var videoData: Data?
     private var uiImage: UIImage?
@@ -39,7 +39,7 @@ class InboxViewModel: ObservableObject {
 
     init(user: User) {
         self.user = user
-        service = ChatService(chatPartner: user)
+        service = InboxService(chatPartner: user)
         observeMessages()
         service.$count
             .receive(on: DispatchQueue.main)
