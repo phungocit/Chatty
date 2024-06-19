@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "agrume",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JanGorman/Agrume",
+      "state" : {
+        "revision" : "8e9f9735b67a714b67752b3ff0e5d5a97c29394a",
+        "version" : "5.8.10"
+      }
+    },
+    {
       "identity" : "app-check",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/app-check.git",
@@ -124,6 +133,15 @@
       "state" : {
         "revision" : "9f0c76544701845ad98716f3f6a774a892152bcb",
         "version" : "1.26.0"
+      }
+    },
+    {
+      "identity" : "swiftygif",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kirualex/SwiftyGif",
+      "state" : {
+        "revision" : "4430cbc148baa3907651d40562d96325426f409a",
+        "version" : "5.4.5"
       }
     }
   ],

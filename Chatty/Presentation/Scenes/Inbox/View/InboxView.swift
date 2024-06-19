@@ -5,8 +5,28 @@
 //  Created by Phil Tran on 16/6/24.
 //
 
+import Agrume
 import AVKit
 import SwiftUI
+
+struct WrapperAgrumeView: UIViewControllerRepresentable {
+    let url: URL
+    let willDismiss: (() -> Void)?
+
+    func makeUIViewController(context: Context) -> UIViewController {
+        let agrume = Agrume(
+            url: url,
+            background: .blurred(.systemUltraThinMaterial),
+            dismissal: .withPan(.init(permittedDirections: .verticalOnly, allowsRotation: false))
+        )
+        agrume.addSubviews()
+        agrume.addOverlayView()
+        agrume.willDismiss = willDismiss
+        return agrume
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+}
 
 struct InboxView: View {
     @StateObject var viewModel: InboxViewModel
@@ -41,29 +61,6 @@ struct InboxView: View {
 
     var body: some View {
         messagesView
-            .fullScreenCover(item: $selectedMessage) { value in
-                ZStack {
-                    LazyImageView(url: value.messageText)
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .overlay(alignment: .topTrailing) {
-                    Button {
-                        selectedMessage = nil
-                    } label: {
-                        ZStack {
-                            Image("close")
-                                .resizable()
-                                .frame(width: 16, height: 16)
-                                .foregroundStyle(Color.label)
-                        }
-                        .frame(width: 32, height: 32)
-                        .padding()
-                    }
-                }
-            }
             .fullScreenCover(isPresented: $isFullScreen) {
                 ZStack {
                     VideoPlayer(player: selectedPlayer)
@@ -140,6 +137,7 @@ struct InboxView: View {
                 }
             }
             .toolbar(tabBarVisibility, for: .tabBar)
+            .toolbar(selectedMessage != nil ? .hidden : .visible, for: .navigationBar)
             .toolbarBackground(isScrollToFirst ? .hidden : .visible, for: .navigationBar)
             .ignoresSafeArea(.keyboard, edges: .bottom)
             .safeAreaInset(edge: .bottom) {
@@ -152,6 +150,28 @@ struct InboxView: View {
             )
             .fullScreenCover(isPresented: $isShowCameraView) {
                 CameraView()
+            }
+            .overlay {
+                if let message, let url = URL(string: message.messageText) {
+                    WrapperAgrumeView(url: url) {
+                        selectedMessage = nil
+                    }
+                    .ignoresSafeArea()
+                    .overlay(alignment: .topTrailing) {
+                        Button {
+                            selectedMessage = nil
+                        } label: {
+                            ZStack {
+                                Image("close")
+                                    .resizable()
+                                    .frame(width: 16, height: 16)
+                                    .foregroundStyle(Color.label)
+                            }
+                            .frame(width: 32, height: 32)
+                            .padding()
+                        }
+                    }
+                }
             }
     }
 

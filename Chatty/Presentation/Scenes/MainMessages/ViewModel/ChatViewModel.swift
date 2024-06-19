@@ -14,12 +14,25 @@ final class ChatViewModel: ObservableObject {
     @Published var isShowLoading = false
 
     private var cancellables = Set<AnyCancellable>()
-    private let service = InboxService()
+    private let service = ChatService()
 
     init() {
         isShowLoading = true
         setupSubscribers()
         service.observeLatestMessages()
+    }
+
+    @MainActor
+    func deleteChat(chatId: String) async {
+        do {
+            try await service.deleteChat(chatId: chatId)
+            latestMessages.removeAll { i in
+                i.id == chatId
+            }
+            print("Delete success chat \(chatId)")
+        } catch {
+            print("Failed to delete chat \(chatId):", error)
+        }
     }
 
     private func setupSubscribers() {
@@ -46,10 +59,10 @@ final class ChatViewModel: ObservableObject {
             UserService.fetchUser(withUid: message.chatPartnerId) { user in
                 var updatedMessage = message
                 updatedMessage.user = user
-                queue.async(flags: .barrier) {
+                // queue.async(flags: .barrier) {
                     updatedMessages.append(updatedMessage)
                     group.leave()
-                }
+                // }
             }
         }
 
@@ -61,7 +74,6 @@ final class ChatViewModel: ObservableObject {
             guard let self = self else { return }
 
             updatedMessages.forEach { message in
-                print(message.chatPartnerId)
                 if let index = self.latestMessages.lastIndex(where: { $0.chatPartnerId == message.chatPartnerId }) {
                     self.latestMessages.remove(at: index)
                 }

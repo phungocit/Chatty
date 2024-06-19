@@ -49,7 +49,7 @@ private extension AuthService {
     func uploadUserData(email: String, fullname: String, id: String) async throws {
         let user = User(fullName: fullname, email: email)
         guard let encodedUser = try? Firestore.Encoder().encode(user) else { return }
-        try await Firestore.firestore().collection("users").document(id).setData(encodedUser)
+        try await Firestore.firestore().collection(CollectionPath.users).document(id).setData(encodedUser)
     }
 
     func loadCurrentUserData() {

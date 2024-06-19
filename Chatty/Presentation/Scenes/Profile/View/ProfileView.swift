@@ -92,16 +92,14 @@ struct ProfileView: View {
                 }
             }
             .photosPicker(isPresented: $isShowPhotoPicker, selection: $viewModel.selectedImage)
-            .actionSheet(isPresented: $isShowSignOutConfirm) {
-                .init(
-                    title: Text("Are you sure want to sign out?"),
-                    buttons: [
-                        .destructive(Text("Sign out")) {
-                            AuthService.shared.signOut()
-                        },
-                        .cancel(),
-                    ]
-                )
+            .confirmationDialog(
+                Text("Are you sure want to sign out?"),
+                isPresented: $isShowSignOutConfirm,
+                titleVisibility: .visible
+            ) {
+                Button("Sign out", role: .destructive) {
+                    AuthService.shared.signOut()
+                }
             }
         }
     }
