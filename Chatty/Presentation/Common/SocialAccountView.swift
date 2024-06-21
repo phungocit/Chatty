@@ -11,7 +11,7 @@ struct SocialAccountView: View {
     var body: some View {
         HStack(spacing: 20) {
             Button {
-                UIApplication.shared.dismissKeyboard()
+                UIApplication.dismissKeyboard()
             } label: {
                 Circle()
                     .strokeBorder(Color.systemGray)
@@ -25,7 +25,7 @@ struct SocialAccountView: View {
             }
 
             Button {
-                UIApplication.shared.dismissKeyboard()
+                UIApplication.dismissKeyboard()
             } label: {
                 Circle()
                     .strokeBorder(Color.systemGray)
@@ -38,7 +38,7 @@ struct SocialAccountView: View {
                     }
             }
             Button {
-                UIApplication.shared.dismissKeyboard()
+                UIApplication.dismissKeyboard()
             } label: {
                 Circle()
                     .strokeBorder(Color.systemGray)

@@ -82,7 +82,7 @@ struct SignInView: View {
                 Color.systemBackground
                 VStack(spacing: 16) {
                     Button {
-                        UIApplication.shared.dismissKeyboard()
+                        UIApplication.dismissKeyboard()
                         if viewModel.isValidInput && !viewModel.isShowLoading {
                             Task {
                                 await viewModel.signIn()
@@ -92,7 +92,7 @@ struct SignInView: View {
                         PrimaryButtonContentView(text: "Log in")
                     }
                     Button {
-                        UIApplication.shared.dismissKeyboard()
+                        UIApplication.dismissKeyboard()
                     } label: {
                         Text("Forgot password?")
                             .font(.callout)
@@ -117,6 +117,5 @@ struct SignInView: View {
 #Preview {
     NavigationStack {
         SignInView()
-            .environmentObject(RoutingViewModel())
     }
 }

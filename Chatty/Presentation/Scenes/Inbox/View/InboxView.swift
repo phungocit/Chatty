@@ -152,14 +152,14 @@ struct InboxView: View {
                 CameraView()
             }
             .overlay {
-                if let message, let url = URL(string: message.messageText) {
+                if let selectedMessage, let url = URL(string: selectedMessage.messageText) {
                     WrapperAgrumeView(url: url) {
-                        selectedMessage = nil
+                        self.selectedMessage = nil
                     }
                     .ignoresSafeArea()
                     .overlay(alignment: .topTrailing) {
                         Button {
-                            selectedMessage = nil
+                            self.selectedMessage = nil
                         } label: {
                             ZStack {
                                 Image("close")

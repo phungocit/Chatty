@@ -49,10 +49,10 @@ class ChatLogViewModel: ObservableObject {
         firestoreListener?.remove()
         chatMessages.removeAll()
         firestoreListener = FirebaseManager.shared.firestore
-            .collection(FirebaseConstants.messages)
+            .collection(FirebaseConstantss.messages)
             .document(fromId)
             .collection(toId)
-            .order(by: FirebaseConstants.timestamp)
+            .order(by: FirebaseConstantss.timestamp)
             .addSnapshotListener { querySnapshot, error in
                 if let error = error {
                     self.errorMessage = "Failed to listen for messages: \(error)"
@@ -83,7 +83,7 @@ class ChatLogViewModel: ObservableObject {
 
         guard let toId = chatUser?.uid else { return }
 
-        let document = FirebaseManager.shared.firestore.collection(FirebaseConstants.messages)
+        let document = FirebaseManager.shared.firestore.collection(FirebaseConstantss.messages)
             .document(fromId)
             .collection(toId)
             .document()
@@ -128,19 +128,19 @@ class ChatLogViewModel: ObservableObject {
         guard let toId = self.chatUser?.uid else { return }
 
         let document = FirebaseManager.shared.firestore
-            .collection(FirebaseConstants.recentMessages)
+            .collection(FirebaseConstantss.recentMessages)
             .document(uid)
-            .collection(FirebaseConstants.messages)
+            .collection(FirebaseConstantss.messages)
             .document(toId)
 
         let data = [
-            FirebaseConstants.timestamp: Timestamp(),
-            FirebaseConstants.text: textToSend,
-            FirebaseConstants.fromId: uid,
-            FirebaseConstants.toId: toId,
-            FirebaseConstants.profileImageUrl: chatUser.profileImageUrl,
-            FirebaseConstants.email: chatUser.email,
-            FirebaseConstants.name: chatUser.name,
+            FirebaseConstantss.timestamp: Timestamp(),
+            FirebaseConstantss.text: textToSend,
+            FirebaseConstantss.fromId: uid,
+            FirebaseConstantss.toId: toId,
+            FirebaseConstantss.profileImageUrl: chatUser.profileImageUrl,
+            FirebaseConstantss.email: chatUser.email,
+            FirebaseConstantss.name: chatUser.name,
         ] as [String: Any]
 
         // you'll need to save another very similar dictionary for the recipient of this message...how?
@@ -155,19 +155,19 @@ class ChatLogViewModel: ObservableObject {
 
         guard let currentUser = FirebaseManager.shared.currentUser else { return }
         let recipientRecentMessageDictionary = [
-            FirebaseConstants.timestamp: Timestamp(),
-            FirebaseConstants.text: textToSend,
-            FirebaseConstants.fromId: uid,
-            FirebaseConstants.toId: toId,
-            FirebaseConstants.profileImageUrl: currentUser.profileImageUrl,
-            FirebaseConstants.email: currentUser.email,
-            FirebaseConstants.name: currentUser.name,
+            FirebaseConstantss.timestamp: Timestamp(),
+            FirebaseConstantss.text: textToSend,
+            FirebaseConstantss.fromId: uid,
+            FirebaseConstantss.toId: toId,
+            FirebaseConstantss.profileImageUrl: currentUser.profileImageUrl,
+            FirebaseConstantss.email: currentUser.email,
+            FirebaseConstantss.name: currentUser.name,
         ] as [String: Any]
 
         FirebaseManager.shared.firestore
-            .collection(FirebaseConstants.recentMessages)
+            .collection(FirebaseConstantss.recentMessages)
             .document(toId)
-            .collection(FirebaseConstants.messages)
+            .collection(FirebaseConstantss.messages)
             .document(currentUser.uid)
             .setData(recipientRecentMessageDictionary) { error in
                 if let error = error {
