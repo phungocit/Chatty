@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct OnBoardingView: View {
-    @EnvironmentObject private var routingVM: RoutingViewModel
-
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -94,5 +92,4 @@ struct OnBoardingView: View {
 
 #Preview {
     OnBoardingView()
-        .environmentObject(RoutingViewModel())
 }

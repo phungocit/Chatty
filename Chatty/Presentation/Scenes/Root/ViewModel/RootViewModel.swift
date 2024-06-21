@@ -11,6 +11,7 @@ import Foundation
 
 final class RootViewModel: ObservableObject {
     @Published var userSession: FirebaseAuth.User?
+    @Published private(set) var authState = AuthState.pending
 
     private var cancellable = Set<AnyCancellable>()
 
@@ -23,5 +24,12 @@ final class RootViewModel: ObservableObject {
             self?.userSession = userSession
         }
         .store(in: &cancellable)
+
+        AuthManager.shared.authState
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] latestAuthState in
+                self?.authState = latestAuthState
+            }
+            .store(in: &cancellable)
     }
 }

@@ -9,19 +9,14 @@ import SwiftUI
 
 struct RootView: View {
     @StateObject private var viewModel = RootViewModel()
-    @State private var isLaunchViewLoading = true
 
     var body: some View {
-        if isLaunchViewLoading {
+        switch viewModel.authState {
+        case .pending:
             LaunchView()
-                .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        isLaunchViewLoading = false
-                    }
-                }
-        } else if viewModel.userSession != nil {
-            TabBarView()
-        } else {
+        case .loggedIn(let loggedInUser):
+            MainTabView(loggedInUser)
+        case .loggedOut:
             OnBoardingView()
         }
     }
