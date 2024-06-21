@@ -41,10 +41,10 @@ class MainMessagesViewModel: ObservableObject {
         recentMessages.removeAll()
 
         firestoreListener = FirebaseManager.shared.firestore
-            .collection(FirebaseConstants.recentMessages)
+            .collection(FirebaseConstantss.recentMessages)
             .document(uid)
-            .collection(FirebaseConstants.messages)
-            .order(by: FirebaseConstants.timestamp)
+            .collection(FirebaseConstantss.messages)
+            .order(by: FirebaseConstantss.timestamp)
             .addSnapshotListener { querySnapshot, error in
                 if let error = error {
                     self.errorMessage = "Failed to listen for recent messages: \(error)"
@@ -92,7 +92,6 @@ class MainMessagesViewModel: ObservableObject {
 }
 
 struct MainMessagesView: View {
-    @EnvironmentObject private var routingVM: RoutingViewModel
     @StateObject private var vm = MainMessagesViewModel()
     @StateObject private var viewModel = ChatViewModel()
     @State private var shouldShowLogOutOptions = false
@@ -211,6 +210,5 @@ struct MainMessagesView: View {
 }
 
 #Preview {
-    TabBarView()
-        .environmentObject(RoutingViewModel())
+    MainTabView(.placeholder)
 }
