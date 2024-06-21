@@ -76,7 +76,7 @@ struct SignUpView: View {
             ZStack {
                 Color.systemBackground
                 Button {
-                    UIApplication.shared.dismissKeyboard()
+                    UIApplication.dismissKeyboard()
                     if viewModel.isValidInput && !viewModel.isShowLoading {
                         Task {
                             await viewModel.createUser()
