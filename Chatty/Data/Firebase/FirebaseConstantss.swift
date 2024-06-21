@@ -1,5 +1,5 @@
 //
-//  FirebaseConstants.swift
+//  FirebaseConstantss.swift
 //  Chatty
 //
 //  Created by Phil Tran on 11/19/21.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct FirebaseConstants {
+struct FirebaseConstantss {
     static let fromId = "fromId"
     static let toId = "toId"
     static let text = "text"
