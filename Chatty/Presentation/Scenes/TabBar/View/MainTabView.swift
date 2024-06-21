@@ -1,5 +1,5 @@
 //
-//  TabBarView.swift
+//  MainTabView.swift
 //  Chatty
 //
 //  Created by Phil Tran on 9/6/24.
@@ -7,12 +7,18 @@
 
 import SwiftUI
 
-struct TabBarView: View {
+struct MainTabView: View {
     @StateObject private var profileViewModel = ProfileViewModel()
+
+    private let currentUser: UserItem
+
+    init(_ currentUser: UserItem) {
+        self.currentUser = currentUser
+    }
 
     var body: some View {
         TabView {
-            ChatView()
+            ChannelTabView(currentUser)
                 .environmentObject(profileViewModel)
                 .tabItem {
                     Label(Tab.chats.rawValue, image: Tab.chats.image)
@@ -31,7 +37,7 @@ struct TabBarView: View {
 }
 
 #Preview {
-    TabBarView()
+    MainTabView(.placeholder)
 }
 
 enum Tab: String {
