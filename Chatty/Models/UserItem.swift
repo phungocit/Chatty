@@ -19,7 +19,7 @@ struct UserItem: Identifiable, Hashable, Decodable {
     }
 
     var bioUnwrapped: String {
-        bio ?? "Hey there! I am using WhatsApp."
+        bio ?? "Hey there! I am using Chatty."
     }
 
     static let placeholder = UserItem(uid: "1", username: "Osas", email: "askswiftskool@gmail.com")

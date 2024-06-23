@@ -39,7 +39,7 @@ struct MessageItem: Identifiable {
     }
 
     var backgroundColor: Color {
-        direction == .sent ? .greenCustom : .systemGray5
+        direction == .sent ? .greenCustom : Color(.systemGray5)
     }
 
     var showGroupPartnerInfo: Bool {

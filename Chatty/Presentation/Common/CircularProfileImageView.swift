@@ -25,6 +25,7 @@ struct CircularProfileImageView: View {
                 .resizable()
                 .placeholder {
                     ProgressView()
+                        .tint(Color(.systemGray))
                 }
                 .scaledToFill()
                 .frame(width: size.dimension, height: size.dimension)
@@ -39,7 +40,7 @@ struct CircularProfileImageView: View {
             .resizable()
             .scaledToFit()
             .imageScale(.large)
-            .foregroundStyle(Color.systemGray)
+            .foregroundStyle(Color(.systemGray))
             .frame(width: size.dimension, height: size.dimension)
             .background(Color.white)
             .clipShape(Circle())
@@ -48,11 +49,13 @@ struct CircularProfileImageView: View {
 
 extension CircularProfileImageView {
     enum Size {
-        case mini, xSmall, small, medium, large, xLarge
+        case xMini, mini, xSmall, small, medium, large, xLarge
         case custom(CGFloat)
 
         var dimension: CGFloat {
             switch self {
+            case .xMini:
+                return 28
             case .mini:
                 return 30
             case .xSmall:
