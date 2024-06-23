@@ -125,25 +125,25 @@ struct MainMessagesView: View {
                                     Text(recentMessage.name)
                                         .font(.body)
                                         .fontWeight(.medium)
-                                        .foregroundStyle(Color.label)
+                                        .foregroundStyle(Color(.label))
                                         .lineLimit(1)
                                     Text((recentMessage.isFromCurrentUser ? "You: " : "") + recentMessage.text)
                                         .font(.subheadline)
                                         .lineLimit(1)
-                                        .foregroundStyle(Color.systemGray)
+                                        .foregroundStyle(Color(.systemGray))
                                 }
                                 Spacer()
                                 Text(recentMessage.timeAgo)
                                     .font(.footnote)
                                     .lineLimit(1)
-                                    .foregroundColor(Color.systemGray)
+                                    .foregroundColor(Color(.systemGray))
                             }
                         }
                         .padding(.vertical, 12)
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.systemBackground)
+                .background(Color(.systemBackground))
                 .padding(.top, -12)
                 .padding([.horizontal, .bottom])
             }
@@ -165,7 +165,7 @@ struct MainMessagesView: View {
                     Text("Chats")
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundStyle(Color.label)
+                        .foregroundStyle(Color(.label))
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
