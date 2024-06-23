@@ -42,6 +42,7 @@ struct NewMessage: View {
             .overlay {
                 if viewModel.isShowLoading {
                     ProgressView()
+                        .tint(Color(.systemGray))
                 }
             }
             .navigationTitle("New message")
@@ -52,7 +53,7 @@ struct NewMessage: View {
                         dismiss()
                     } label: {
                         Text("Cancel")
-                            .foregroundStyle(Color.label)
+                            .foregroundStyle(Color(.label))
                     }
                 }
             }

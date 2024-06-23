@@ -38,18 +38,18 @@ struct ChatView: View {
                                 Text(message.user?.fullName ?? "")
                                     .font(.body)
                                     .fontWeight(.medium)
-                                    .foregroundStyle(Color.label)
+                                    .foregroundStyle(Color(.label))
                                     .lineLimit(1)
                                 Text(message.displayContent)
                                     .font(.subheadline)
                                     .lineLimit(1)
-                                    .foregroundStyle(Color.systemGray)
+                                    .foregroundStyle(Color(.systemGray))
                             }
                             Spacer()
                             Text(message.timestampString)
                                 .font(.footnote)
                                 .lineLimit(1)
-                                .foregroundColor(Color.systemGray)
+                                .foregroundColor(Color(.systemGray))
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                         .contentShape(Rectangle())
@@ -68,17 +68,17 @@ struct ChatView: View {
                         } label: {
                             swipeIcon(label: "Delete", imageName: "trash")
                         }
-                        .tint(Color.systemRed)
+                        .tint(Color(.systemRed))
                     }
                 }
             }
             .listStyle(.plain)
-            .background(Color.systemBackground)
+            .background(Color(.systemBackground))
             .padding(.top, -12)
             .overlay {
                 if viewModel.isShowLoading {
                     ProgressView()
-                        .tint(Color.systemGray)
+                        .tint(Color(.systemGray))
                 }
             }
             .searchable(text: .constant(""), prompt: "Search")
@@ -100,7 +100,7 @@ struct ChatView: View {
                     Text("Chats")
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundStyle(Color.label)
+                        .foregroundStyle(Color(.label))
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {

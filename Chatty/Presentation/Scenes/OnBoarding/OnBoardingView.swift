@@ -15,26 +15,26 @@ struct OnBoardingView: View {
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Connect friends")
                             .font(.system(size: 68))
-                            .foregroundColor(Color.label)
+                            .foregroundColor(Color(.label))
                         + Text(" easily & quickly")
                             .font(.system(size: 68, weight: .bold))
-                            .foregroundColor(Color.label)
+                            .foregroundColor(Color(.label))
                         Text("Our chat app is the perfect way to stay connected with friends and family.")
                             .font(.callout)
-                            .foregroundStyle(Color.systemGray)
+                            .foregroundStyle(Color(.systemGray))
                     }
                     .frame(maxWidth: .infinity, alignment: .topLeading)
                     VStack(spacing: 30) {
                         SocialAccountView()
                         HStack(spacing: 16) {
                             Rectangle()
-                                .fill(Color.systemGray5)
+                                .fill(Color(.systemGray5))
                                 .frame(height: 1)
                             Text("OR")
                                 .font(.subheadline)
-                                .foregroundStyle(Color.systemGray)
+                                .foregroundStyle(Color(.systemGray))
                             Rectangle()
-                                .fill(Color.systemGray5)
+                                .fill(Color(.systemGray5))
                                 .frame(height: 1)
                         }
                         .padding(.horizontal, 6)
@@ -51,7 +51,7 @@ struct OnBoardingView: View {
                     .padding(.top, 20)
                     HStack(spacing: 0) {
                         Text("Existing account?")
-                            .foregroundStyle(Color.systemGray)
+                            .foregroundStyle(Color(.systemGray))
                             .font(.callout)
                         NavigationLink {
                             SignInView()
@@ -69,7 +69,7 @@ struct OnBoardingView: View {
                 .padding(.horizontal)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             }
-            .background(Color.systemBackground)
+            .background(Color(.systemBackground))
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     HStack {
@@ -80,7 +80,7 @@ struct OnBoardingView: View {
                             .font(.callout)
                             .fontWeight(.medium)
                     }
-                    .foregroundStyle(Color.label)
+                    .foregroundStyle(Color(.label))
                 }
             }
             .navigationBarBackButtonHidden()
