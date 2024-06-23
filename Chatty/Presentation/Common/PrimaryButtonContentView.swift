@@ -20,10 +20,10 @@ struct PrimaryButtonContentView: View {
         Text(text)
             .font(.callout)
             .fontWeight(.semibold)
-            .foregroundStyle(isEnable ? Color.white : Color.systemGray)
+            .foregroundStyle(isEnable ? Color.white : Color(.systemGray))
             .frame(height: 48)
             .frame(maxWidth: .infinity)
-            .background(isEnable ? Color.greenCustom : Color.systemGray5)
+            .background(isEnable ? Color.greenCustom : Color(.systemGray5))
             .clipShape(
                 RoundedRectangle(cornerRadius: 16)
             )
