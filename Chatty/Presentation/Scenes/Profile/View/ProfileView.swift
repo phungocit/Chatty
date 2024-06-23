@@ -38,7 +38,7 @@ struct ProfileView: View {
                         .overlay {
                             if viewModel.isShowLoading {
                                 ProgressView()
-                                    .tint(Color.systemGray)
+                                    .tint(Color(.systemGray))
                             }
                         }
                         Circle()
@@ -78,7 +78,7 @@ struct ProfileView: View {
                         dismiss()
                     } label: {
                         Text("Done")
-                            .foregroundStyle(Color.label)
+                            .foregroundStyle(Color(.label))
                     }
                 }
 
@@ -87,7 +87,7 @@ struct ProfileView: View {
                         isShowSignOutConfirm.toggle()
                     } label: {
                         Text("Sign out")
-                            .foregroundStyle(Color.systemRed)
+                            .foregroundStyle(Color(.systemRed))
                     }
                 }
             }
@@ -98,7 +98,9 @@ struct ProfileView: View {
                 titleVisibility: .visible
             ) {
                 Button("Sign out", role: .destructive) {
-                    AuthService.shared.signOut()
+                    Task {
+                        try await AuthManager.shared.logOut()
+                    }
                 }
             }
         }
@@ -117,19 +119,19 @@ struct OptionView: View {
             Image(systemName: imageName)
                 .resizable()
                 .frame(width: 16, height: 16)
-                .foregroundStyle(Color.systemGray)
+                .foregroundStyle(Color(.systemGray))
                 .padding(.top, secondSubtitle != "" ? 12 : 0)
             VStack(alignment: .leading) {
                 Text(title)
-                    .foregroundStyle(Color.systemGray)
+                    .foregroundStyle(Color(.systemGray))
                     .font(.headline)
                 Text(subtitle)
                     .font(.footnote)
-                    .foregroundStyle(Color.label)
+                    .foregroundStyle(Color(.label))
                 if secondSubtitle != "" {
                     Text(secondSubtitle)
                         .font(.caption)
-                        .foregroundStyle(Color.systemGray)
+                        .foregroundStyle(Color(.systemGray))
                         .padding(.top, 1)
                 }
             }
@@ -138,7 +140,7 @@ struct OptionView: View {
                 Image(systemName: "pencil")
                     .resizable()
                     .frame(width: 16, height: 16)
-                    .foregroundStyle(Color.systemGray)
+                    .foregroundStyle(Color(.systemGray))
                     .padding(.top, secondSubtitle != "" ? 12 : 0)
             }
         }

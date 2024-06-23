@@ -40,13 +40,13 @@ struct PeopleView: View {
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.systemBackground)
+                .background(Color(.systemBackground))
                 .padding(.all)
             }
             .overlay {
                 if viewModel.isShowLoading {
                     ProgressView()
-                        .tint(Color.systemGray)
+                        .tint(Color(.systemGray))
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -71,7 +71,7 @@ struct PeopleView: View {
                     Text("People")
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundStyle(Color.label)
+                        .foregroundStyle(Color(.label))
                 }
             }
             .fullScreenCover(

@@ -1,39 +1,47 @@
 //
-//  SignUpView.swift
+//  SignInView.swift
 //  Chatty
 //
-//  Created by Phil Tran on 7/6/24.
+//  Created by Phil Tran on 8/6/24.
 //
 
 import SwiftUI
-import UIKit
 
-struct SignUpView: View {
-    @StateObject private var viewModel = SignUpViewModel()
+struct SignInView: View {
+    @StateObject private var viewModel = SignInViewModel()
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         VStack {
             VStack(spacing: 16) {
-                Text("Sign up with Email")
+                Text("Log in to Chatty")
                     .font(.title3)
                     .bold()
                     .foregroundStyle(Color(.label))
-                Text("Get chatting with friends and family today by signing up for our chat app!")
+                Text("Welcome back! Sign in using your social account or email to continue us")
                     .multilineTextAlignment(.center)
                     .foregroundStyle(Color(.systemGray))
                     .padding(.top)
             }
             .padding(.horizontal)
 
-            ScrollView {
-                VStack(spacing: 0) {
+            VStack(spacing: 0) {
+                SocialAccountView()
+                HStack(spacing: 16) {
+                    Rectangle()
+                        .fill(Color(.systemGray5))
+                        .frame(height: 1)
+                    Text("OR")
+                        .font(.subheadline)
+                        .foregroundStyle(Color(.systemGray))
+                    Rectangle()
+                        .fill(Color(.systemGray5))
+                        .frame(height: 1)
+                }
+                .padding(.horizontal, 6)
+                .padding(.top, 30)
+                ScrollView {
                     VStack(spacing: 20) {
-                        AuthenTextFieldView(title: "Your name", inValidText: "Your name must not be empty", isValid: $viewModel.isValidName) {
-                            TextField("", text: $viewModel.fullName)
-                                .autocapitalization(.words)
-                                .textContentType(.name)
-                        }
                         AuthenTextFieldView(title: "Your email", inValidText: "Invalid email address", isValid: $viewModel.isValidEmail) {
                             TextField("", text: $viewModel.email)
                                 .textInputAutocapitalization(.never)
@@ -45,24 +53,21 @@ struct SignUpView: View {
                                 .textInputAutocapitalization(.never)
                                 .textContentType(.password)
                         }
-                        AuthenTextFieldView(title: "Confirm password", inValidText: "Confirm password and password must match", isValid: $viewModel.isValidConfirmPassword) {
-                            SecureField("", text: $viewModel.confirmPassword)
-                                .textInputAutocapitalization(.never)
-                                .textContentType(.password)
-                        }
-                        Text(viewModel.signUpErrorMessage)
+
+                        Text(viewModel.signInErrorMessage)
                             .lineLimit(nil)
                             .font(.caption)
                             .foregroundStyle(Color(.systemRed))
                             .multilineTextAlignment(.leading)
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     }
-                    .padding(.top, 28)
                 }
-                .padding(.top)
-                .padding(.horizontal)
+                .padding(.top, 28)
             }
+            .padding(.top)
+            .padding(.horizontal)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .overlay {
             if viewModel.isShowLoading {
                 ProgressView()
@@ -76,15 +81,25 @@ struct SignUpView: View {
         .safeAreaInset(edge: .bottom) {
             ZStack {
                 Color(.systemBackground)
-                Button {
-                    UIApplication.dismissKeyboard()
-                    if viewModel.isValidInput && !viewModel.isShowLoading {
-                        Task {
-                            await viewModel.createUser()
+                VStack(spacing: 16) {
+                    Button {
+                        UIApplication.dismissKeyboard()
+                        if viewModel.isValidInput && !viewModel.isShowLoading {
+                            Task {
+                                await viewModel.signIn()
+                            }
                         }
+                    } label: {
+                        PrimaryButtonContentView(text: "Log in")
                     }
-                } label: {
-                    PrimaryButtonContentView(text: "Create an account")
+                    Button {
+                        UIApplication.dismissKeyboard()
+                    } label: {
+                        Text("Forgot password?")
+                            .font(.callout)
+                            .fontWeight(.medium)
+                            .foregroundStyle(Color.greenCustom)
+                    }
                 }
                 .padding(.horizontal)
             }
@@ -102,6 +117,6 @@ struct SignUpView: View {
 
 #Preview {
     NavigationStack {
-        SignUpView()
+        SignInView()
     }
 }
