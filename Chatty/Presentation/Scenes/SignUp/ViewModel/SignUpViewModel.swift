@@ -24,7 +24,7 @@ final class SignUpViewModel: ObservableObject {
         isShowLoading = true
         signUpErrorMessage = " "
         do {
-            try await AuthService.shared.createUser(withEmail: email, password: password, fullName: fullName)
+            try await AuthManager.shared.createAccount(with: email, and: password, for: fullName)
             isShowLoading = false
         } catch {
             print("Failed to create user:", error)

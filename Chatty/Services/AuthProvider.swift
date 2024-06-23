@@ -19,7 +19,7 @@ protocol AuthProvider {
     var authState: CurrentValueSubject<AuthState, Never> { get }
     func autoLogin() async
     func login(with email: String, and password: String) async throws
-    func createAccount(for username: String, with email: String, and password: String) async throws
+    func createAccount(with email: String, and password: String, for username: String) async throws
     func logOut() async throws
 }
 
@@ -58,7 +58,7 @@ final class AuthManager: AuthProvider {
             authState.send(.loggedOut)
         } else {
             // dummy
-            authState.send(.loggedIn(UserItem(uid: "1", username: "Black Panther", email: "blackpanther@test.com")))
+//            authState.send(.loggedIn(UserItem(uid: "1", username: "Black Panther", email: "blackpanther@test.com")))
             fetchCurrentUserInfo()
         }
     }
@@ -74,13 +74,13 @@ final class AuthManager: AuthProvider {
         }
     }
 
-    func createAccount(for username: String, with email: String, and password: String) async throws {
+    func createAccount(with email: String, and password: String, for username: String) async throws {
         do {
             let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
             let uid = authResult.user.uid
             let newUser = UserItem(uid: uid, username: username, email: email)
             try await saveUserInfoDatabase(user: newUser)
-            authState.send(.loggedIn(newUser))
+            // authState.send(.loggedIn(newUser))
         } catch {
             print("🔐 Failed to Create an Account: \(error.localizedDescription)")
             throw AuthError.accountCreationFailed(error.localizedDescription)
