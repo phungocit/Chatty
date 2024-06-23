@@ -14,7 +14,7 @@ struct SocialAccountView: View {
                 UIApplication.dismissKeyboard()
             } label: {
                 Circle()
-                    .strokeBorder(Color.systemGray)
+                    .strokeBorder(Color(.systemGray))
                     .frame(width: 48, height: 48)
                     .overlay {
                         Image("facebook")
@@ -28,7 +28,7 @@ struct SocialAccountView: View {
                 UIApplication.dismissKeyboard()
             } label: {
                 Circle()
-                    .strokeBorder(Color.systemGray)
+                    .strokeBorder(Color(.systemGray))
                     .frame(width: 48, height: 48)
                     .overlay {
                         Image("google")
@@ -41,14 +41,14 @@ struct SocialAccountView: View {
                 UIApplication.dismissKeyboard()
             } label: {
                 Circle()
-                    .strokeBorder(Color.systemGray)
+                    .strokeBorder(Color(.systemGray))
                     .frame(width: 48, height: 48)
                     .overlay {
                         Image("apple")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 24, height: 24)
-                            .foregroundStyle(Color.label)
+                            .foregroundStyle(Color(.label))
                     }
             }
         }
