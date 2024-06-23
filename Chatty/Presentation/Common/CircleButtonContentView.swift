@@ -12,7 +12,7 @@ struct CircleButtonContentView: View {
     private let imageColor: Color
     private let imageName: String
 
-    init(imageName: String, imageColor: Color = Color.label, backgroundColor: Color = Color.systemGray5) {
+    init(imageName: String, imageColor: Color = Color(.label), backgroundColor: Color = Color(.systemGray5)) {
         self.imageName = imageName
         self.backgroundColor = backgroundColor
         self.imageColor = imageColor

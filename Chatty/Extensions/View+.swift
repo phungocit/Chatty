@@ -13,4 +13,15 @@ extension View {
             UIApplication.dismissKeyboard()
         }
     }
+
+    func applyTail(_ direction: MessageDirection) -> some View {
+        clipShape(
+            .rect(
+                topLeadingRadius: 16,
+                bottomLeadingRadius: direction == .received ? 8 : 16,
+                bottomTrailingRadius: direction == .sent ? 8 : 16,
+                topTrailingRadius: 16
+            )
+        )
+    }
 }
