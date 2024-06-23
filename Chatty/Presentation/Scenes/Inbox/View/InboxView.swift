@@ -77,14 +77,14 @@ struct InboxView: View {
                             Image("close")
                                 .resizable()
                                 .frame(width: 16, height: 16)
-                                .foregroundStyle(Color.label)
+                                .foregroundStyle(Color(.label))
                         }
                         .frame(width: 32, height: 32)
                         .padding()
                     }
                 }
             }
-            .background(Color.systemBackground)
+            .background(Color(.systemBackground))
             .dismissKeyboard()
             .navigationTitle("")
             .navigationBarBackButtonHidden()
@@ -107,11 +107,11 @@ struct InboxView: View {
                                         .font(.body)
                                         .fontWeight(.bold)
                                         .lineLimit(1)
-                                        .foregroundStyle(Color.label)
+                                        .foregroundStyle(Color(.label))
                                     Text("Active now")
                                         .font(.footnote)
                                         .lineLimit(1)
-                                        .foregroundStyle(Color.systemGray)
+                                        .foregroundStyle(Color(.systemGray))
                                 }
                             }
                         }
@@ -165,7 +165,7 @@ struct InboxView: View {
                                 Image("close")
                                     .resizable()
                                     .frame(width: 16, height: 16)
-                                    .foregroundStyle(Color.label)
+                                    .foregroundStyle(Color(.label))
                             }
                             .frame(width: 32, height: 32)
                             .padding()
@@ -188,7 +188,7 @@ struct InboxView: View {
                         } header: {
                             Text(group.date.chatTimestampString())
                                 .font(.footnote)
-                                .foregroundStyle(Color.label)
+                                .foregroundStyle(Color(.label))
                         }
                         .id(group.id)
                     }
@@ -289,13 +289,12 @@ struct InboxView: View {
                     HStack {
                         Text("Aa")
                             .font(.body)
-                            .foregroundStyle(Color.systemGray)
+                            .foregroundStyle(Color(.systemGray))
                         Spacer()
                     }
                     .padding(.leading, 4)
                 }
                 HStack {
-                    //                    EmojiTextView(text: $viewModel.messageText, isEmoji: $viewModel.isEmoji)
                     TextEditor(text: $viewModel.messageText)
                         .focused($isFocused)
                         .scrollContentBackground(.hidden)
@@ -309,7 +308,7 @@ struct InboxView: View {
                 }
             }
             .padding(.horizontal, 8)
-            .background(Color.systemGray5)
+            .background(Color(.systemGray5))
             .clipShape(Capsule())
             .frame(height: 40)
 
@@ -343,7 +342,7 @@ struct InboxView: View {
             }
         }
         .padding(.horizontal)
-        .background(Color.systemBackground)
+        .background(Color(.systemBackground))
     }
 
     func inboxMessage(_ message: Message) -> some View {
@@ -426,10 +425,10 @@ struct InboxView: View {
                 }
             } else {
                 Text(message.messageText)
-                    .foregroundStyle(Color.label)
+                    .foregroundStyle(Color(.label))
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
-                    .background(Color.systemGray5)
+                    .background(Color(.systemGray5))
             }
         }
     }
@@ -475,7 +474,7 @@ private struct DescriptionPlaceholder: View {
         HStack {
             Text("Aa")
                 .font(.body)
-                .foregroundStyle(Color.systemGray)
+                .foregroundStyle(Color(.systemGray))
             Spacer()
         }
     }

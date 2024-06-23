@@ -192,7 +192,7 @@ struct ChatLogView: View {
             messagesView
             Text(vm.errorMessage)
         }
-        .background(Color.systemBackground)
+        .background(Color(.systemBackground))
         .dismissKeyboard()
         .navigationTitle("")
         .navigationBarBackButtonHidden()
@@ -218,11 +218,11 @@ struct ChatLogView: View {
                                     .font(.body)
                                     .fontWeight(.bold)
                                     .lineLimit(1)
-                                    .foregroundStyle(Color.label)
+                                    .foregroundStyle(Color(.label))
                                 Text("Active now")
                                     .font(.footnote)
                                     .lineLimit(1)
-                                    .foregroundStyle(Color.systemGray)
+                                    .foregroundStyle(Color(.systemGray))
                             }
                         }
                     }
@@ -348,7 +348,7 @@ struct ChatLogView: View {
                     .scrollContentBackground(.hidden)
                     .padding(.horizontal, 8)
             }
-            .background(Color.systemGray5)
+            .background(Color(.systemGray5))
             .clipShape(Capsule())
             .frame(height: 40)
 
@@ -374,7 +374,7 @@ struct ChatLogView: View {
             isCollapseButton = true
         }
         .padding(.horizontal)
-        .background(Color.systemBackground)
+        .background(Color(.systemBackground))
     }
 }
 
@@ -396,10 +396,10 @@ struct MessageView: View {
             } else {
                 HStack {
                     Text(message.text)
-                        .foregroundStyle(Color.label)
+                        .foregroundStyle(Color(.label))
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
-                        .background(Color.systemGray5)
+                        .background(Color(.systemGray5))
                         .cornerRadius(8)
                     Spacer()
                 }
@@ -415,7 +415,7 @@ private struct DescriptionPlaceholder: View {
         HStack {
             Text("Aa")
                 .font(.body)
-                .foregroundStyle(Color.systemGray)
+                .foregroundStyle(Color(.systemGray))
                 .padding(.leading, 5)
                 .padding(.top, -4)
             Spacer()
