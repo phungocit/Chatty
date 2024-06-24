@@ -2,7 +2,7 @@
 //  TextInputAreaView.swift
 //  Chatty
 //
-//  Created by Tran Ngoc Phu on 22/6/24.
+//  Created by Phil Tran on 22/6/24.
 //
 
 import SwiftUI
@@ -21,20 +21,20 @@ struct TextInputAreaView: View {
     var body: some View {
         HStack(spacing: 12) {
             HStack(spacing: 4) {
-                if !isCollapseButton {
+                if isCollapseButton {
+                    if isRecording {
+                        stopRecordButton
+                    } else {
+                        collapseButton
+                    }
+                } else {
                     HStack(spacing: 4) {
                         moreButton
                         cameraButton
                         mediaPickerButton
+                        audioRecorderButton
                     }
-                    .transition(
-                        .asymmetric(
-                            insertion: .move(edge: isCollapseButton ? .trailing : .leading),
-                            removal: .move(edge: isCollapseButton ? .trailing : .leading)
-                        )
-                    )
                 }
-                audioRecorderButton
             }
 
             Group {
@@ -45,15 +45,17 @@ struct TextInputAreaView: View {
                 }
             }
             .padding(.horizontal, 8)
+            .frame(height: 40)
             .background(Color(.systemGray5))
             .clipShape(Capsule())
-            .frame(height: 40)
 
             sendMessageButton
         }
         .onChange(of: isFocused) { newValue in
-            withAnimation {
-                isCollapseButton = newValue
+            if !isRecording {
+                withAnimation {
+                    isCollapseButton = newValue
+                }
             }
         }
         .onChange(of: textMessage) { _ in
@@ -65,7 +67,6 @@ struct TextInputAreaView: View {
         }
         .padding(.horizontal)
         .background(Color(.systemBackground))
-        .animation(.spring, value: isRecording)
         .onChange(of: isRecording) { isRecording in
             if isRecording {
                 withAnimation(.easeInOut(duration: 1.5).repeatForever()) {
@@ -74,10 +75,16 @@ struct TextInputAreaView: View {
             } else {
                 isPulsing = false
             }
+            withAnimation {
+                isCollapseButton = isRecording
+            }
         }
     }
+}
 
-    private var audioSessionIndicatorView: some View {
+// MARK: - Private methods
+private extension TextInputAreaView {
+    var audioSessionIndicatorView: some View {
         HStack {
             Image(systemName: "circle.fill")
                 .foregroundStyle(.red)
@@ -94,9 +101,11 @@ struct TextInputAreaView: View {
                 .font(.callout)
                 .fontWeight(.semibold)
         }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 4)
     }
 
-    private var messageTextField: some View {
+    var messageTextField: some View {
         ZStack {
             if textMessage.isEmpty {
                 HStack {
@@ -122,7 +131,7 @@ struct TextInputAreaView: View {
         }
     }
 
-    private var cameraButton: some View {
+    var cameraButton: some View {
         Button {
             actionHandler(.presentCamera)
         } label: {
@@ -137,7 +146,7 @@ struct TextInputAreaView: View {
         }
     }
 
-    private var mediaPickerButton: some View {
+    var mediaPickerButton: some View {
         Button {
             actionHandler(.presentMediaPicker)
         } label: {
@@ -151,30 +160,24 @@ struct TextInputAreaView: View {
             .frame(width: 36, height: 36)
         }
         .disabled(isRecording)
-        .grayscale(isRecording ? 0.8 : 0)
     }
 
-    private var audioRecorderButton: some View {
+    var audioRecorderButton: some View {
         Button {
-            if !isCollapseButton || isRecording {
-                actionHandler(.recordAudio)
-            }
-            withAnimation {
-                isCollapseButton.toggle()
-            }
+            actionHandler(.recordAudio)
         } label: {
             ZStack {
-                Image(isCollapseButton ? "collapse" : isRecording ? "pause" : "mic")
+                Image("mic")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: isCollapseButton ? 9 : 22, height: isCollapseButton ? 16 : 21)
-                    .foregroundStyle(isRecording ? Color.white : Color.greenCustom)
+                    .frame(width: 22, height: 21)
+                    .foregroundStyle(Color.greenCustom)
             }
-            .frame(width: isCollapseButton ? 22 : 36, height: isCollapseButton ? 22 : 36)
+            .frame(width: 36, height: 36)
         }
     }
 
-    private var sendMessageButton: some View {
+    var sendMessageButton: some View {
         Button {
             actionHandler(.sendMessage)
         } label: {
@@ -194,7 +197,7 @@ struct TextInputAreaView: View {
         .disabled(isRecording)
     }
 
-    private var moreButton: some View {
+    var moreButton: some View {
         Button {} label: {
             ZStack {
                 Image("more")
@@ -204,6 +207,38 @@ struct TextInputAreaView: View {
                     .foregroundStyle(Color.greenCustom)
             }
             .frame(width: 36, height: 36)
+        }
+    }
+
+    var collapseButton: some View {
+        Button {
+            withAnimation {
+                isCollapseButton = false
+            }
+        } label: {
+            ZStack {
+                Image("collapse")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 9, height: 16)
+                    .foregroundStyle(Color.greenCustom)
+            }
+            .frame(width: 22, height: 22)
+        }
+    }
+
+    var stopRecordButton: some View {
+        Button {
+            actionHandler(.recordAudio)
+        } label: {
+            Image(systemName: "square.fill")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 11, height: 11)
+                .foregroundStyle(Color.white)
+                .padding(7)
+                .background(Color.red)
+                .clipShape(Circle())
         }
     }
 }
