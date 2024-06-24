@@ -11,31 +11,23 @@ struct BubbleTextView: View {
     let item: MessageItem
 
     var body: some View {
-        HStack(alignment: .bottom, spacing: 5) {
-            if item.showGroupPartnerInfo {
+        HStack(alignment: .bottom, spacing: 12) {
+            if item.showPartnerInfo {
                 CircularProfileImageView(item.sender?.profileImageUrl, size: .xMini)
             }
 
-//            if item.direction == .sent {
-//                timeStampTextView
-//            }
-
             Text(item.text)
-                .padding(10)
+                .foregroundStyle(item.foregroundColor)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
                 .background(item.backgroundColor)
-                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .applyTail(item.direction)
                 .contextMenu {
                     Button {} label: {
                         Label("ContextMenu", systemImage: "heart")
                     }
                 }
-
-//            if item.direction == .received {
-//                timeStampTextView
-//            }
         }
-        .shadow(color: Color(.systemGray3).opacity(0.1), radius: 5, x: 0, y: 20)
         .frame(maxWidth: .infinity, alignment: item.alignment)
         .padding(.leading, item.leadingPadding)
         .padding(.trailing, item.trailingPadding)

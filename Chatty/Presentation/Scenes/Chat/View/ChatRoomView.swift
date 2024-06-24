@@ -26,6 +26,7 @@ struct ChatRoomView: View {
             .ignoresSafeArea(.keyboard, edges: .bottom)
             .navigationBarBackButtonHidden()
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar(viewModel.photoPreviewState.isShow ? .hidden : .visible, for: .navigationBar)
             .toolbar(tabBarVisibility, for: .tabBar)
             .toolbar {
                 leadingNavItems
@@ -41,10 +42,21 @@ struct ChatRoomView: View {
                 bottomSafeAreaView
             }
             .animation(.easeInOut, value: viewModel.showPhotoPickerPreview)
-            .fullScreenCover(isPresented: $viewModel.videoPlayerState.show) {
+            .fullScreenCover(isPresented: $viewModel.videoPlayerState.isShow) {
                 if let player = viewModel.videoPlayerState.player {
                     MediaPlayerView(player: player) {
                         viewModel.dismissMediaPlayer()
+                    }
+                }
+            }
+            .overlay {
+                if viewModel.photoPreviewState.isShow, let url = viewModel.photoPreviewState.url {
+                    WrapperAgrumeView(url: url) {
+                        viewModel.dismissPhotoPreview()
+                    }
+                    .ignoresSafeArea()
+                    .overlay(alignment: .topTrailing) {
+                        ClosePreviewButton(dismissPlayer: viewModel.dismissPhotoPreview)
                     }
                 }
             }
