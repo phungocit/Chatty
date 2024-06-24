@@ -2,7 +2,7 @@
 //  ChatRoomViewModel.swift
 //  Chatty
 //
-//  Created by Tran Ngoc Phu on 22/6/24.
+//  Created by Phil Tran on 22/6/24.
 //
 
 import Combine
@@ -16,7 +16,8 @@ final class ChatRoomViewModel: ObservableObject {
     @Published var showPhotoPicker = false
     @Published var photoPickerItems = [PhotosPickerItem]()
     @Published var mediaAttachments = [MediaAttachment]()
-    @Published var videoPlayerState: (show: Bool, player: AVPlayer?) = (false, nil)
+    @Published var videoPlayerState: (isShow: Bool, player: AVPlayer?) = (false, nil)
+    @Published var photoPreviewState: (isShow: Bool, url: URL?) = (false, nil)
     @Published var isRecodingVoiceMessage = false
     @Published var elapsedVoiceMessageTime: TimeInterval = 0
     @Published var scrollToBottomRequest: (scroll: Bool, isAnimated: Bool) = (false, false)
@@ -216,13 +217,13 @@ final class ChatRoomViewModel: ObservableObject {
     }
 
     private func getMessages() {
-        // messages = dummyMessages
-        // scrollToBottom(isAnimated: false)
+        messages = dummyMessages
+        scrollToBottom(isAnimated: false)
 
         MessageService.getMessages(for: channel) { [weak self] messages in
             self?.messages = messages
             self?.scrollToBottom(isAnimated: false)
-            print("messages: \(messages.map { $0.text })")
+            print("messages: \(messages)")
         }
     }
 
@@ -307,12 +308,22 @@ final class ChatRoomViewModel: ObservableObject {
     func dismissMediaPlayer() {
         videoPlayerState.player?.replaceCurrentItem(with: nil)
         videoPlayerState.player = nil
-        videoPlayerState.show = false
+        videoPlayerState.isShow = false
     }
 
     func showMediaPlayer(_ fileURL: URL) {
-        videoPlayerState.show = true
+        videoPlayerState.isShow = true
         videoPlayerState.player = AVPlayer(url: fileURL)
+    }
+
+    func dismissPhotoPreview() {
+        photoPreviewState.isShow = false
+        photoPreviewState.url = nil
+    }
+
+    func showPhotoPreview(_ imageURL: URL?) {
+        photoPreviewState.isShow = true
+        photoPreviewState.url = imageURL
     }
 
     func handleMediaAttachmentPreview(_ action: MediaAttachmentPreview.UserAction) {
@@ -338,11 +349,6 @@ final class ChatRoomViewModel: ObservableObject {
     }
 
     private var dummyMessages: [MessageItem] {
-        [
-            MessageItem(id: "1", isGroupChat: false, text: "", type: .admin(AdminMessageType.channelCreation), ownerUid: "1", timeStamp: ISO8601DateFormatter().date(from: "2024-06-20 01: 55: 28 +0000") ?? Date(), sender: nil, thumbnailUrl: nil, thumbnailWidth: nil, thumbnailHeight: nil, videoURL: nil, audioURL: nil, audioDuration: nil),
-            MessageItem(id: "2", isGroupChat: false, text: "66", type: .text, ownerUid: "2", timeStamp: ISO8601DateFormatter().date(from: "2024-06-20 01: 56: 11 +0000") ?? Date(), sender: nil, thumbnailUrl: nil, thumbnailWidth: nil, thumbnailHeight: nil, videoURL: nil, audioURL: nil, audioDuration: nil), MessageItem(id: "3", isGroupChat: false, text: "88", type: .text, ownerUid: "3", timeStamp: ISO8601DateFormatter().date(from: "2024-06-20 01: 56: 18 +0000") ?? Date(), sender: nil, thumbnailUrl: nil, thumbnailWidth: nil, thumbnailHeight: nil, videoURL: nil, audioURL: nil, audioDuration: nil),
-            MessageItem(id: "4", isGroupChat: false, text: "", type: .photo, ownerUid: "4", timeStamp: ISO8601DateFormatter().date(from: "2024-06-20 01: 58: 12 +0000") ?? Date(), sender: nil, thumbnailUrl: "https://images.pexels.com/photos/96938/pexels-photo-96938.jpeg?cs=srgb&dl=pexels-francesco-ungaro-96938.jpg&fm=jpg", thumbnailWidth: 667.0, thumbnailHeight: 1000.0, videoURL: nil, audioURL: nil, audioDuration: nil),
-            MessageItem(id: "5", isGroupChat: false, text: "", type: .photo, ownerUid: "5", timeStamp: ISO8601DateFormatter().date(from: "2024-06-20 01: 58: 56 +0000") ?? Date(), sender: nil, thumbnailUrl: "https://images.pexels.com/photos/96938/pexels-photo-96938.jpeg?cs=srgb&dl=pexels-francesco-ungaro-96938.jpg&fm=jpg", thumbnailWidth: 4288.0, thumbnailHeight: 2848.0, videoURL: nil, audioURL: nil, audioDuration: nil),
-        ]
+        [MessageItem(id: "-O07I1_O8yQYiNerekoa", isGroupChat: false, text: "", type: MessageType.admin(AdminMessageType.channelCreation), ownerUid: "Qdvmf89G0WZZ7I3LGU2jRpKYJc63", timeStamp: ISO8601DateFormatter().date(from: "2024-06-24 03: 31: 09 +0000") ?? Date(), sender: nil, thumbnailUrl: nil, thumbnailWidth: nil, thumbnailHeight: nil, videoURL: nil, audioURL: nil, audioDuration: nil), MessageItem(id: "-O07I4XN01B0b9iGXwzE", isGroupChat: false, text: "", type: MessageType.audio, ownerUid: "Qdvmf89G0WZZ7I3LGU2jRpKYJc63", timeStamp: ISO8601DateFormatter().date(from: "2024-06-24 03: 31: 21 +0000") ?? Date(), sender: nil, thumbnailUrl: nil, thumbnailWidth: nil, thumbnailHeight: nil, videoURL: nil, audioURL: Optional("https://firebasestorage.googleapis.com:443/v0/b/swiftui-firebase-chat-837dc.appspot.com/o/voice_messages%2F32C36F32-070E-4713-929B-388287DA0562?alt=media&token=6388e88d-38d8-45b9-b623-4d8ef22ec985"), audioDuration: 10), MessageItem(id: "-O07I8uPVSbfQTET5eWJ", isGroupChat: false, text: "", type: MessageType.photo, ownerUid: "Qdvmf89G0WZZ7I3LGU2jRpKYJc63", timeStamp: ISO8601DateFormatter().date(from: "2024-06-24 03: 31: 39 +0000") ?? Date(), sender: nil, thumbnailUrl: Optional("https://firebasestorage.googleapis.com:443/v0/b/swiftui-firebase-chat-837dc.appspot.com/o/photo_messages%2F56B49E37-8E29-4F88-BC35-4F99FB7B0AB5?alt=media&token=dadceb2f-ba0e-42af-ac82-c9e921923509"), thumbnailWidth: Optional(667.0), thumbnailHeight: Optional(1000.0), videoURL: nil, audioURL: nil, audioDuration: nil), MessageItem(id: "-O07IHeLYlUCIiiliI76", isGroupChat: false, text: "Ssss", type: MessageType.text, ownerUid: "Qdvmf89G0WZZ7I3LGU2jRpKYJc63", timeStamp: ISO8601DateFormatter().date(from: "2024-06-24 03: 32: 15 +0000") ?? Date(), sender: nil, thumbnailUrl: nil, thumbnailWidth: nil, thumbnailHeight: nil, videoURL: nil, audioURL: nil, audioDuration: nil), MessageItem(id: "-O07Ip-6arGid7JjfnoA", isGroupChat: false, text: "", type: MessageType.video, ownerUid: "uxK6S8h74wUhqDWpWwJ9ITonuw93", timeStamp: ISO8601DateFormatter().date(from: "2024-06-24 03: 34: 35 +0000") ?? Date(), sender: nil, thumbnailUrl: Optional("https://firebasestorage.googleapis.com/v0/b/swiftui-firebase-chat-837dc.appspot.com/o/profile_images%2Ftout.webp?alt=media&token=d11e00a8-97ec-4fe6-8607-5887e3f57bb5"), thumbnailWidth: Optional(760.0), thumbnailHeight: Optional(442.0), videoURL: "https://firebasestorage.googleapis.com/v0/b/swiftui-firebase-chat-837dc.appspot.com/o/video_messages%2FFE2ACABD-896A-48CE-80A2-30FE9050A10B?alt=media&token=4845772d-19ed-4d74-b969-b9565cc3ddae", audioURL: nil, audioDuration: nil), MessageItem(id: "-O07Iq6bXcmlOfPKZhrG", isGroupChat: false, text: "Aaa", type: MessageType.text, ownerUid: "uxK6S8h74wUhqDWpWwJ9ITonuw93", timeStamp: ISO8601DateFormatter().date(from: "2024-06-24 03: 34: 40 +0000") ?? Date(), sender: nil, thumbnailUrl: nil, thumbnailWidth: nil, thumbnailHeight: nil, videoURL: nil, audioURL: nil, audioDuration: nil), MessageItem(id: "-O07Itxr-GQA7cEjEMjN", isGroupChat: false, text: "Aa", type: MessageType.audio, ownerUid: "uxK6S8h74wUhqDWpWwJ9ITonuw93", timeStamp: ISO8601DateFormatter().date(from: "2024-06-24 03: 34: 56 +0000") ?? Date(), sender: nil, thumbnailUrl: nil, thumbnailWidth: nil, thumbnailHeight: nil, videoURL: nil, audioURL: Optional("https://firebasestorage.googleapis.com:443/v0/b/swiftui-firebase-chat-837dc.appspot.com/o/voice_messages%2F27918901-F69E-477A-A4C2-89499954C930?alt=media&token=b9ed869d-f882-4249-9e4d-c88c7144751d"), audioDuration: 5), MessageItem(id: "-O07IyPTxL_mDbwA2iOA", isGroupChat: false, text: "Aaa", type: MessageType.photo, ownerUid: "uxK6S8h74wUhqDWpWwJ9ITonuw93", timeStamp: ISO8601DateFormatter().date(from: "2024-06-24 03: 35: 14 +0000") ?? Date(), sender: .init(uid: "1", username: "Nebula", email: "nebula@test.com", profileImageUrl: "https://firebasestorage.googleapis.com/v0/b/swiftui-firebase-chat-837dc.appspot.com/o/profile_images%2FNebula_Vol._3.webp?alt=media&token=58430050-d2b2-47e2-a40b-8a318a07a102"), thumbnailUrl: Optional("https://firebasestorage.googleapis.com:443/v0/b/swiftui-firebase-chat-837dc.appspot.com/o/photo_messages%2F5F502119-BA9B-484C-A51F-3C5658EAE2D1?alt=media&token=da3c5c75-efa4-4e3d-9421-a277a35a83fc"), thumbnailWidth: Optional(4032.0), thumbnailHeight: Optional(3024.0), videoURL: nil, audioURL: nil, audioDuration: nil)]
     }
 }
