@@ -9,25 +9,6 @@ import Agrume
 import AVKit
 import SwiftUI
 
-struct WrapperAgrumeView: UIViewControllerRepresentable {
-    let url: URL
-    let willDismiss: (() -> Void)?
-
-    func makeUIViewController(context: Context) -> UIViewController {
-        let agrume = Agrume(
-            url: url,
-            background: .blurred(.systemUltraThinMaterial),
-            dismissal: .withPan(.init(permittedDirections: .verticalOnly, allowsRotation: false))
-        )
-        agrume.addSubviews()
-        agrume.addOverlayView()
-        agrume.willDismiss = willDismiss
-        return agrume
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
-}
-
 struct InboxView: View {
     @StateObject var viewModel: InboxViewModel
 

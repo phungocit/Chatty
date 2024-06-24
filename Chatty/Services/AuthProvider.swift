@@ -45,7 +45,10 @@ extension AuthError: LocalizedError {
 final class AuthManager: AuthProvider {
     private init() {
         Task {
-            await autoLogin()
+            // dummy
+            authState.send(.loggedIn(UserItem(uid: "1", username: "Black Panther", email: "blackpanther@test.com")))
+            //            await autoLogin()
+//            try await logOut()
         }
     }
 
@@ -57,8 +60,6 @@ final class AuthManager: AuthProvider {
         if Auth.auth().currentUser == nil {
             authState.send(.loggedOut)
         } else {
-            // dummy
-//            authState.send(.loggedIn(UserItem(uid: "1", username: "Black Panther", email: "blackpanther@test.com")))
             fetchCurrentUserInfo()
         }
     }
