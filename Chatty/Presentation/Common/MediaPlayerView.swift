@@ -16,29 +16,11 @@ struct MediaPlayerView: View {
         VideoPlayer(player: player)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .ignoresSafeArea()
-            .overlay(alignment: .topLeading) {
-                cancelButton
-                    .padding()
+            .overlay(alignment: .topTrailing) {
+                ClosePreviewButton(dismissPlayer: dismissPlayer)
             }
             .onAppear {
                 player.play()
             }
-    }
-
-    var cancelButton: some View {
-        Button {
-            dismissPlayer()
-        } label: {
-            Image(systemName: "xmark")
-                .scaledToFit()
-                .imageScale(.large)
-                .padding(10)
-                .foregroundStyle(.white)
-                .background(Color.white.opacity(0.5))
-                .clipShape(Circle())
-                .shadow(radius: 5)
-                .padding(2)
-                .bold()
-        }
     }
 }
