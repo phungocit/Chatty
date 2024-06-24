@@ -2,7 +2,7 @@
 //  MediaAttachmentPreview.swift
 //  Chatty
 //
-//  Created by Tran Ngoc Phu on 22/6/24.
+//  Created by Phil Tran on 22/6/24.
 //
 
 import SwiftUI

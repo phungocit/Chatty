@@ -93,28 +93,11 @@ extension MessageListController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
-        let message = viewModel.messages[indexPath.row]
-
         cell.contentConfiguration = UIHostingConfiguration {
-            switch message.type {
-            case .text:
-                BubbleTextView(item: message)
-            case .video, .photo:
-                BubbleImageView(item: message)
-            case .audio:
-                BubbleAudioView(item: message)
-            case let .admin(adminType):
-                switch adminType {
-                case .channelCreation:
-                    ChannelCreationTextView()
-                    if viewModel.channel.isGroupChat {
-                        AdminMessageTextView(channel: viewModel.channel)
-                    }
-                default:
-                    Text("UNKNOW")
-                }
-            }
+            BubbleMessageView(viewModel: viewModel, row: indexPath.row)
         }
+        .margins(.horizontal, 12)
+        .margins(.vertical, 6)
         return cell
     }
 
@@ -137,6 +120,9 @@ extension MessageListController: UITableViewDelegate, UITableViewDataSource {
             guard let audioURLString = messageItem.audioURL, let url = URL(string: audioURLString) else { return }
             // viewModel.showMediaPlayer(url)
             print("url", url)
+        case .photo:
+            guard let photoURLString = messageItem.thumbnailUrl else { return }
+            viewModel.showPhotoPreview(URL(string: photoURLString))
         default: break
         }
     }
