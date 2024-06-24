@@ -1,5 +1,4 @@
 {
-  "originHash" : "da6ce8d47a97092c4729b40ef8f0b3afc532944bc4cf854127a3bbddf6475759",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -24,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/app-check.git",
       "state" : {
-        "revision" : "076b241a625e25eac22f8849be256dfb960fcdfe",
-        "version" : "10.19.1"
+        "revision" : "3b62f154d00019ae29a71e9738800bb6f18b236d",
+        "version" : "10.19.2"
       }
     },
     {
@@ -123,8 +122,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kean/Nuke",
       "state" : {
-        "revision" : "084076db4f9b9ee4db51177ef5a4879689c1aa09",
-        "version" : "12.7.2"
+        "revision" : "311016d972aa751ae8ab0cd5897422ebe7db0501",
+        "version" : "12.7.3"
       }
     },
     {
@@ -155,5 +154,5 @@
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }
