@@ -9,50 +9,46 @@ import AVFoundation
 import SwiftUI
 
 struct BubbleAudioView: View {
-    let item: MessageItem
-
     @StateObject private var voiceMessagePlayer = VoiceMessagePlayer()
     @State private var sliderValue = 0.0
+    private let item: MessageItem
+
+    init(item: MessageItem) {
+        self.item = item
+        let thumbConfig = UIImage.SymbolConfiguration(scale: .small)
+        UISlider.appearance()
+            .setThumbImage(
+                UIImage(systemName: "circle.fill", withConfiguration: thumbConfig), for: .normal
+            )
+    }
 
     var body: some View {
-        HStack(alignment: .bottom, spacing: 5) {
-            if item.showGroupPartnerInfo {
+        HStack(alignment: .bottom, spacing: 12) {
+            if item.showPartnerInfo {
                 CircularProfileImageView(item.sender?.profileImageUrl, size: .xMini)
-                    .offset(y: 5)
             }
-
-//            if item.direction == .sent {
-//                timeStampTextView
-//            }
 
             HStack {
                 playButton
                 Slider(value: $sliderValue, in: 0 ... (item.audioDuration ?? 1), onEditingChanged: sliderEditingChanged)
-                    .tint(.gray)
+                    .tint(item.direction == .received ? Color(.label) : .white)
 
                 if let duration = item.audioDuration, !duration.isNaN, !duration.isInfinite {
                     Text(formatter.string(from: duration) ?? "")
-                        .foregroundStyle(.gray)
+                        .font(.footnote)
+                        .foregroundStyle(item.foregroundColor)
                 }
             }
-            .padding(10)
-            .background(Color.gray.opacity(0.1))
-            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-            .padding(5)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 4)
             .background(item.backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             .applyTail(item.direction)
             .contextMenu {
                 Button {} label: {
                     Label("ContextMenu", systemImage: "heart")
                 }
             }
-
-//            if item.direction == .received {
-//                timeStampTextView
-//            }
         }
-        .shadow(color: Color(.systemGray3).opacity(0.1), radius: 5, x: 0, y: 20)
         .frame(maxWidth: .infinity, alignment: item.alignment)
         .padding(.leading, item.leadingPadding)
         .padding(.trailing, item.trailingPadding)
@@ -67,7 +63,7 @@ struct BubbleAudioView: View {
         }
     }
 
-    var formatter: DateComponentsFormatter {
+    private var formatter: DateComponentsFormatter {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.unitsStyle = .abbreviated
@@ -85,11 +81,8 @@ struct BubbleAudioView: View {
         } label: {
             Image(systemName: voiceMessagePlayer.playbackState == .playing ? "pause.fill" : "play.fill")
                 .resizable()
-                .frame(width: 12, height: 12)
-                .padding(10)
-                .background(item.direction == .received ? .green : .white)
-                .clipShape(Circle())
-                .foregroundStyle(item.direction == .received ? .white : .black)
+                .frame(width: 16, height: 16)
+                .foregroundStyle(item.direction == .received ? Color(.label) : .white)
         }
     }
 
