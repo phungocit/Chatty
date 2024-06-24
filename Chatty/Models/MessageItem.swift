@@ -42,8 +42,12 @@ struct MessageItem: Identifiable {
         direction == .sent ? .greenCustom : Color(.systemGray5)
     }
 
-    var showGroupPartnerInfo: Bool {
-        isGroupChat && direction == .received
+    var foregroundColor: Color {
+        direction == .sent ? .white : Color(.label)
+    }
+
+    var showPartnerInfo: Bool {
+        direction != .sent
     }
 
     var leadingPadding: CGFloat {
