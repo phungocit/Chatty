@@ -30,7 +30,14 @@ struct MediaAttachmentPreview: View {
     }
 
     private func thumbnailImageView(_ attachment: MediaAttachment) -> some View {
-        Button {} label: {
+        Button {
+            if case .video = attachment.type {
+                actionHandler(.play(attachment))
+            } else {
+                print("attachment",attachment)
+                actionHandler(.preview(attachment))
+            }
+        } label: {
             Image(uiImage: attachment.thumbnail)
                 .resizable()
                 .scaledToFill()
@@ -41,7 +48,7 @@ struct MediaAttachmentPreview: View {
                     cancelButton(attachment)
                 }
                 .overlay {
-                    playButton("play.fill", attachment: attachment)
+                    playImage("play.fill", attachment: attachment)
                         .opacity(attachment.type == .video(UIImage(), .stubURL) ? 1 : 0)
                 }
         }
@@ -64,43 +71,43 @@ struct MediaAttachmentPreview: View {
         }
     }
 
-    private func playButton(_ systemName: String, attachment: MediaAttachment) -> some View {
-        Button {
-            actionHandler(.play(attachment))
-        } label: {
-            Image(systemName: systemName)
-                .scaledToFit()
-                .imageScale(.large)
-                .padding(10)
-                .foregroundStyle(.white)
-                .background(Color.white.opacity(0.5))
-                .clipShape(Circle())
-                .shadow(radius: 5)
-                .padding(2)
-                .bold()
-        }
+    private func playImage(_ systemName: String, attachment: MediaAttachment) -> some View {
+        Image(systemName: systemName)
+            .scaledToFit()
+            .imageScale(.large)
+            .padding(10)
+            .foregroundStyle(.white)
+            .background(Color.white.opacity(0.5))
+            .clipShape(Circle())
+            .shadow(radius: 5)
+            .padding(2)
+            .bold()
     }
 
     private func audioAttachmentPreview(_ attachment: MediaAttachment) -> some View {
-        ZStack {
-            LinearGradient(colors: [.green, .green.opacity(0.8), .teal], startPoint: .topLeading, endPoint: .bottom)
-            playButton("mic.fill", attachment: attachment)
-                .padding(.bottom, 15)
-        }
-        .frame(width: Constants.imageDimen * 2, height: Constants.imageDimen)
-        .cornerRadius(5)
-        .clipped()
-        .overlay(alignment: .topTrailing) {
-            cancelButton(attachment)
-        }
-        .overlay(alignment: .bottomLeading) {
-            Text(attachment.fileURL?.absoluteString ?? "Unknown")
-                .lineLimit(1)
-                .font(.caption)
-                .padding(2)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .foregroundStyle(.white)
-                .background(Color.white.opacity(0.5))
+        Button {
+            actionHandler(.play(attachment))
+        } label: {
+            ZStack {
+                LinearGradient(colors: [.green, .green.opacity(0.8), .teal], startPoint: .topLeading, endPoint: .bottom)
+                playImage("mic.fill", attachment: attachment)
+                    .padding(.bottom, 15)
+            }
+            .frame(width: Constants.imageDimen, height: Constants.imageDimen)
+            .cornerRadius(5)
+            .clipped()
+            .overlay(alignment: .topTrailing) {
+                cancelButton(attachment)
+            }
+            .overlay(alignment: .bottomLeading) {
+                Text(attachment.fileURL?.absoluteString ?? "Unknown")
+                    .lineLimit(1)
+                    .font(.caption)
+                    .padding(2)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .foregroundStyle(.white)
+                    .background(Color.white.opacity(0.5))
+            }
         }
     }
 }
@@ -113,6 +120,7 @@ extension MediaAttachmentPreview {
 
     enum UserAction {
         case play(_ item: MediaAttachment)
+        case preview(_ item: MediaAttachment)
         case remove(_ item: MediaAttachment)
     }
 }
