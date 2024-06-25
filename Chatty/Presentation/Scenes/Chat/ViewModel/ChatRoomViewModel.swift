@@ -17,7 +17,7 @@ final class ChatRoomViewModel: ObservableObject {
     @Published var photoPickerItems = [PhotosPickerItem]()
     @Published var mediaAttachments = [MediaAttachment]()
     @Published var videoPlayerState: (isShow: Bool, player: AVPlayer?) = (false, nil)
-    @Published var photoPreviewState: (isShow: Bool, url: URL?) = (false, nil)
+    @Published var photoPreviewState: (isShow: Bool, thumbnail: PhotoPreview?) = (false, nil)
     @Published var isRecodingVoiceMessage = false
     @Published var elapsedVoiceMessageTime: TimeInterval = 0
     @Published var scrollToBottomRequest: (scroll: Bool, isAnimated: Bool) = (false, false)
@@ -299,7 +299,7 @@ final class ChatRoomViewModel: ObservableObject {
                     let thumbnail = UIImage(data: data),
                     let itemIdentifier = photoItem.itemIdentifier
                 else { return }
-                let photoAttachment = MediaAttachment(id: itemIdentifier, type: .photo(thumbnail))
+                let photoAttachment = MediaAttachment(id: itemIdentifier, type: .photo(.init(localPhoto: thumbnail)))
                 mediaAttachments.insert(photoAttachment, at: 0)
             }
         }
@@ -318,12 +318,12 @@ final class ChatRoomViewModel: ObservableObject {
 
     func dismissPhotoPreview() {
         photoPreviewState.isShow = false
-        photoPreviewState.url = nil
+        photoPreviewState.thumbnail = nil
     }
 
-    func showPhotoPreview(_ imageURL: URL?) {
+    func showPhotoPreview(_ thumbnail: PhotoPreview) {
         photoPreviewState.isShow = true
-        photoPreviewState.url = imageURL
+        photoPreviewState.thumbnail = thumbnail
     }
 
     func handleMediaAttachmentPreview(_ action: MediaAttachmentPreview.UserAction) {
@@ -331,6 +331,8 @@ final class ChatRoomViewModel: ObservableObject {
         case let .play(attachment):
             guard let fileURL = attachment.fileURL else { return }
             showMediaPlayer(fileURL)
+        case let .preview(attachment):
+            showPhotoPreview(.init(localPhoto: attachment.thumbnail, remotePhoto: attachment.fileURL))
         case let .remove(attachment):
             remove(attachment)
             guard let fileURL = attachment.fileURL else { return }

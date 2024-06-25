@@ -132,28 +132,28 @@ struct InboxView: View {
             .fullScreenCover(isPresented: $isShowCameraView) {
                 CameraView()
             }
-            .overlay {
-                if let selectedMessage, let url = URL(string: selectedMessage.messageText) {
-                    WrapperAgrumeView(url: url) {
-                        self.selectedMessage = nil
-                    }
-                    .ignoresSafeArea()
-                    .overlay(alignment: .topTrailing) {
-                        Button {
-                            self.selectedMessage = nil
-                        } label: {
-                            ZStack {
-                                Image("close")
-                                    .resizable()
-                                    .frame(width: 16, height: 16)
-                                    .foregroundStyle(Color(.label))
-                            }
-                            .frame(width: 32, height: 32)
-                            .padding()
-                        }
-                    }
-                }
-            }
+//            .overlay {
+//                if let selectedMessage, let url = URL(string: selectedMessage.messageText) {
+//                    WrapperAgrumeView(url: url) {
+//                        self.selectedMessage = nil
+//                    }
+//                    .ignoresSafeArea()
+//                    .overlay(alignment: .topTrailing) {
+//                        Button {
+//                            self.selectedMessage = nil
+//                        } label: {
+//                            ZStack {
+//                                Image("close")
+//                                    .resizable()
+//                                    .frame(width: 16, height: 16)
+//                                    .foregroundStyle(Color(.label))
+//                            }
+//                            .frame(width: 32, height: 32)
+//                            .padding()
+//                        }
+//                    }
+//                }
+//            }
     }
 
     private var messagesView: some View {
