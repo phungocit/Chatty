@@ -22,7 +22,6 @@ struct ChatPartnerRowView<Content: View>: View {
 
             Text(user.username)
                 .font(.headline)
-                .fontWeight(.semibold)
                 .foregroundStyle(Color(.label))
 
             trailingItems
