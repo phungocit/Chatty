@@ -50,8 +50,8 @@ struct ChatRoomView: View {
                 }
             }
             .overlay {
-                if viewModel.photoPreviewState.isShow, let url = viewModel.photoPreviewState.url {
-                    WrapperAgrumeView(url: url) {
+                if viewModel.photoPreviewState.isShow, let thumbnail = viewModel.photoPreviewState.thumbnail {
+                    WrapperAgrumeView(thumbnail: thumbnail) {
                         viewModel.dismissPhotoPreview()
                     }
                     .ignoresSafeArea()
@@ -103,7 +103,7 @@ extension ChatRoomView {
                 }
                 NavigationLink {} label: {
                     HStack(spacing: 8) {
-                        CircularProfileImageView(channel, size: .mini)
+                        CircularProfileImageView(channel, size: .custom(36))
                         VStack(alignment: .leading, spacing: 0) {
                             Text(channelTitle)
                                 .font(.body)
