@@ -25,7 +25,7 @@ struct MainTabView: View {
                 }
                 .tag(Tab.chats)
 
-            PeopleView()
+            PeopleView(currentUser)
                 .environmentObject(profileViewModel)
                 .tabItem {
                     Label(Tab.people.rawValue, image: Tab.people.image)
