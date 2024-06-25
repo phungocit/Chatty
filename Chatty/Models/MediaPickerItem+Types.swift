@@ -30,7 +30,7 @@ struct MediaAttachment: Identifiable {
     var thumbnail: UIImage {
         switch type {
         case let .photo(thumbnail):
-            return thumbnail
+            return thumbnail.localPhoto ?? UIImage()
         case let .video(thumbnail, _):
             return thumbnail
         case .audio:
@@ -40,8 +40,8 @@ struct MediaAttachment: Identifiable {
 
     var fileURL: URL? {
         switch type {
-        case .photo:
-            return nil
+        case let .photo(thumbnail):
+            return thumbnail.remotePhoto
         case let .video(_, fileURL):
             return fileURL
         case let .audio(voiceURL, _):
@@ -59,7 +59,7 @@ struct MediaAttachment: Identifiable {
 }
 
 enum MediaAttachmentType: Equatable {
-    case photo(_ thumbnail: UIImage)
+    case photo(_ thumbnail: PhotoPreview)
     case video(_ thumbnail: UIImage, _ url: URL)
     case audio(_ url: URL, _ duration: TimeInterval)
 
@@ -71,4 +71,9 @@ enum MediaAttachmentType: Equatable {
             return false
         }
     }
+}
+
+struct PhotoPreview {
+    var localPhoto: UIImage?
+    var remotePhoto: URL?
 }

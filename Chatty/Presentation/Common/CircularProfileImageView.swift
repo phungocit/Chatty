@@ -57,7 +57,7 @@ extension CircularProfileImageView {
             case .xMini:
                 return 28
             case .mini:
-                return 30
+                return 32
             case .xSmall:
                 return 40
             case .small:
