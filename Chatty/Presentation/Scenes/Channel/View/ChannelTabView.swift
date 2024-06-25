@@ -100,7 +100,7 @@ extension ChannelTabView {
             Button {
                 isShowProfileView.toggle()
             } label: {
-                CircularProfileImageView(currentUser.profileImageUrl, size: .xSmall)
+                CircularProfileImageView(currentUser.profileImageUrl, size: .mini)
             }
         }
     }

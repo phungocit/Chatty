@@ -9,19 +9,26 @@ import Agrume
 import SwiftUI
 
 struct WrapperAgrumeView: UIViewControllerRepresentable {
-    let url: URL
+    let thumbnail: PhotoPreview
     let willDismiss: (() -> Void)?
 
+    private let background = Background.blurred(.systemUltraThinMaterial)
+    private let dismissal = Dismissal.withPan(.init(permittedDirections: .verticalOnly, allowsRotation: false))
+
     func makeUIViewController(context: Context) -> UIViewController {
-        let agrume = Agrume(
-            url: url,
-            background: .blurred(.systemUltraThinMaterial),
-            dismissal: .withPan(.init(permittedDirections: .verticalOnly, allowsRotation: false))
-        )
-        agrume.addSubviews()
-        agrume.addOverlayView()
-        agrume.willDismiss = willDismiss
-        return agrume
+        var agrume: Agrume?
+
+        if let image = thumbnail.localPhoto {
+            agrume = Agrume(image: image, background: background, dismissal: dismissal)
+        } else if let url = thumbnail.remotePhoto {
+            agrume = Agrume(url: url, background: background, dismissal: dismissal)
+        }
+
+        agrume?.addSubviews()
+        agrume?.addOverlayView()
+        agrume?.willDismiss = willDismiss
+
+        return agrume ?? UIViewController()
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
