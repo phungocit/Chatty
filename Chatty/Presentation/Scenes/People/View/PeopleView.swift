@@ -9,34 +9,39 @@ import SwiftUI
 
 struct PeopleView: View {
     @EnvironmentObject private var profileViewModel: ProfileViewModel
-    @StateObject private var viewModel = PeopleViewModel()
+    @StateObject private var viewModel: PeopleViewModel
     @State private var isPushToInboxView = false
     @State private var isShowProfileView = false
     @State private var selectedUser: User?
+    @State private var currentUser: UserItem
+
+    private let userImageSize = CircularProfileImageView.Size.xSmall
+    private let userSpacing = CGFloat(16)
+
+    init(_ currentUser: UserItem) {
+        self.currentUser = currentUser
+        _viewModel = .init(wrappedValue: PeopleViewModel(currentUser))
+    }
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 0) {
-                    ForEach(viewModel.users) { user in
+                    ForEach(viewModel.users, id: \.id) { user in
                         Button {
-                            selectedUser = user
-                            isPushToInboxView.toggle()
+                            viewModel.createDirectChannel(user)
                         } label: {
-                            HStack(spacing: 16) {
-                                LazyImageView(url: user.profileImageUrl)
-                                    .scaledToFill()
-                                    .frame(width: 40, height: 40)
-                                    .clipShape(Circle())
-                                Text(user.fullName)
-                                    .font(.body)
-                                    .fontWeight(.medium)
-                                    .foregroundColor(Color(.label))
-                                Spacer()
-                            }
+                            ChatPartnerRowView(user: user)
                         }
+                        .id(user.id)
+
                         Divider()
+                            .padding(.leading, CircularProfileImageView.Size.xSmall.dimension + 12)
                             .padding(.vertical, 8)
+                    }
+
+                    if viewModel.isPaginatable {
+                        loadMoreUsersView
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -50,43 +55,67 @@ struct PeopleView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationDestination(isPresented: $isPushToInboxView) {
-                if let selectedUser {
-                    InboxView(user: selectedUser)
+            .navigationDestination(isPresented: $viewModel.channelCreateState.isNavigateToChatRoom) {
+                if let newChannel = viewModel.channelCreateState.newChannel {
+                    ChatRoomView(channel: newChannel)
                 }
             }
             .toolbar(.visible, for: .tabBar)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        isShowProfileView.toggle()
-                    } label: {
-                        LazyImageView(url: profileViewModel.user?.profileImageUrl ?? "")
-                            .scaledToFill()
-                            .frame(width: 32, height: 32)
-                            .clipShape(Circle())
-                    }
-                }
-                ToolbarItem(placement: .principal) {
-                    Text("People")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color(.label))
-                }
+                leadingNavItem
+                principalNavItem
             }
             .fullScreenCover(
                 isPresented: $isShowProfileView,
                 content: {
-                    if let user = profileViewModel.user {
-                        ProfileView(user: user)
-                    }
+                    ProfileView(user: .init(uid: currentUser.uid, fullName: currentUser.username, email: currentUser.email, profileImageUrl: currentUser.profileImageUrl))
                 }
             )
+            .alert(isPresented: $viewModel.errorState.showError) {
+                Alert(
+                    title: Text("Uh Oh 😕"),
+                    message: Text(viewModel.errorState.errorMessage),
+                    dismissButton: .default(Text("Ok"))
+                )
+            }
         }
     }
 }
 
+private extension PeopleView {
+    @ToolbarContentBuilder
+    private var leadingNavItem: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Button {
+                isShowProfileView.toggle()
+            } label: {
+                CircularProfileImageView(currentUser.profileImageUrl, size: .mini)
+            }
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var principalNavItem: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            Text("People")
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundStyle(Color(.label))
+        }
+    }
+
+    private var loadMoreUsersView: some View {
+        ProgressView()
+            .tint(Color(.systemGray))
+            .frame(maxWidth: .infinity)
+            .listRowBackground(Color.clear)
+            .task {
+                await viewModel.fetchUsers()
+            }
+    }
+}
+
 #Preview {
-    PeopleView()
+    PeopleView(.placeholder)
         .environmentObject(ProfileViewModel())
 }
