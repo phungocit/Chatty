@@ -2,7 +2,7 @@
 //  ChannelService.swift
 //  Chatty
 //
-//  Created by Foo on 25/06/2024.
+//  Created by Phil Tran on 25/06/2024.
 //
 
 import Firebase
