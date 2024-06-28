@@ -2,7 +2,7 @@
 //  BubbleMessageView.swift
 //  Chatty
 //
-//  Created by Foo on 24/06/2024.
+//  Created by Phil Tran on 24/06/2024.
 //
 
 import SwiftUI
