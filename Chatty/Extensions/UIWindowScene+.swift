@@ -2,7 +2,7 @@
 //  UIWindowScene+.swift
 //  Chatty
 //
-//  Created by Foo on 21/06/2024.
+//  Created by Phil Tran on 21/06/2024.
 //
 
 import UIKit
