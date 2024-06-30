@@ -12,6 +12,7 @@ struct ChatRoomView: View {
     let channel: ChannelItem
 
     @StateObject private var viewModel: ChatRoomViewModel
+    @StateObject private var voiceMessagePlayer = VoiceMessagePlayer()
     @Environment(\.dismiss) private var dismiss
     @State private var tabBarVisibility = Visibility.hidden
 
@@ -22,6 +23,7 @@ struct ChatRoomView: View {
 
     var body: some View {
         MessageListView(viewModel)
+            .environmentObject(voiceMessagePlayer)
             .ignoresSafeArea(edges: .bottom)
             .ignoresSafeArea(.keyboard, edges: .bottom)
             .navigationBarBackButtonHidden()
