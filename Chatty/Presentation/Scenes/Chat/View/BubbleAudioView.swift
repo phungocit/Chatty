@@ -9,12 +9,20 @@ import AVFoundation
 import SwiftUI
 
 struct BubbleAudioView: View {
-    @StateObject private var voiceMessagePlayer = VoiceMessagePlayer()
+    @EnvironmentObject private var voiceMessagePlayer: VoiceMessagePlayer
     @State private var sliderValue = 0.0
+    @State private var playbackState = VoiceMessagePlayer.PlaybackState.stopped
+    @State private var playbackTime = "00:00"
+    @State private var sliderRange: ClosedRange<Double>
+    @State private var isDraggingSlider = false
     private let item: MessageItem
 
     init(item: MessageItem) {
         self.item = item
+
+        let audioDuration = item.audioDuration ?? 20
+        _sliderRange = State(wrappedValue: 0 ... audioDuration)
+
         let thumbConfig = UIImage.SymbolConfiguration(scale: .small)
         UISlider.appearance()
             .setThumbImage(
@@ -30,14 +38,12 @@ struct BubbleAudioView: View {
 
             HStack {
                 playButton
-                Slider(value: $sliderValue, in: 0 ... (item.audioDuration ?? 1), onEditingChanged: sliderEditingChanged)
+                Slider(value: $sliderValue, in: sliderRange, onEditingChanged: sliderEditingChanged)
                     .tint(item.direction == .received ? Color(.label) : .white)
 
-                if let duration = item.audioDuration, !duration.isNaN, !duration.isInfinite {
-                    Text(formatter.string(from: duration) ?? "")
-                        .font(.footnote)
-                        .foregroundStyle(item.foregroundColor)
-                }
+                Text(playbackState == .stopped ? item.audioDurationString : playbackTime)
+                    .font(.footnote)
+                    .foregroundStyle(item.foregroundColor)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 4)
@@ -52,44 +58,70 @@ struct BubbleAudioView: View {
         .frame(maxWidth: .infinity, alignment: item.alignment)
         .padding(.leading, item.leadingPadding)
         .padding(.trailing, item.trailingPadding)
-        .onChange(of: voiceMessagePlayer.currentTime) { newValue in
-            sliderValue = newValue.seconds
+        .onReceive(voiceMessagePlayer.$playbackState) { state in
+            observePlaybackState(state)
+        }
+        .onReceive(voiceMessagePlayer.$currentTime) { currentTime in
+            guard voiceMessagePlayer.currentURL?.absoluteString == item.audioURL else { return }
+            listen(to: currentTime)
         }
     }
+}
 
-    private func sliderEditingChanged(editing: Bool) {
-        if !editing {
-            voiceMessagePlayer.seek(to: sliderValue)
-        }
-    }
-
-    private var formatter: DateComponentsFormatter {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.hour, .minute, .second]
-        formatter.unitsStyle = .abbreviated
-        return formatter
-    }
-
-    private var playButton: some View {
+private extension BubbleAudioView {
+    var playButton: some View {
         Button {
-            guard let audioURLString = item.audioURL, let url = URL(string: audioURLString) else { return }
-            if voiceMessagePlayer.playbackState == .playing {
-                voiceMessagePlayer.pauseAudio()
-            } else {
-                voiceMessagePlayer.playAudio(from: url)
-            }
+            handlePlayVoiceMessage()
         } label: {
-            Image(systemName: voiceMessagePlayer.playbackState == .playing ? "pause.fill" : "play.fill")
+            Image(systemName: playbackState.icon)
                 .resizable()
                 .frame(width: 16, height: 16)
                 .foregroundStyle(item.direction == .received ? Color(.label) : .white)
         }
     }
 
-    private var timeStampTextView: some View {
+    var timeStampTextView: some View {
         Text(item.timeStamp.formatToTime)
             .font(.footnote)
             .foregroundStyle(.gray)
+    }
+
+    var isCorrectVoiceMessage: Bool {
+        voiceMessagePlayer.currentURL?.absoluteString == item.audioURL
+    }
+
+    func sliderEditingChanged(editing: Bool) {
+        isDraggingSlider = editing
+        if !editing, isCorrectVoiceMessage {
+            voiceMessagePlayer.seek(to: sliderValue)
+        }
+    }
+
+    func handlePlayVoiceMessage() {
+        if playbackState == .stopped || playbackState == .paused {
+            guard let audioURLString = item.audioURL, let url = URL(string: audioURLString) else { return }
+            voiceMessagePlayer.playAudio(from: url)
+        } else {
+            voiceMessagePlayer.pauseAudio()
+        }
+    }
+
+    func observePlaybackState(_ state: VoiceMessagePlayer.PlaybackState) {
+        switch state {
+        case .stopped:
+            playbackState = .stopped
+            sliderValue = 0
+        case .playing, .paused:
+            if isCorrectVoiceMessage {
+                playbackState = state
+            }
+        }
+    }
+
+    func listen(to currentTime: CMTime) {
+        guard !isDraggingSlider else { return }
+        playbackTime = currentTime.seconds.formatElapsedTime
+        sliderValue = currentTime.seconds
     }
 }
 
@@ -98,6 +130,7 @@ struct BubbleAudioView: View {
         BubbleAudioView(item: .receivedPlaceholder)
         BubbleAudioView(item: .sentPlaceholder)
     }
+    .environmentObject(VoiceMessagePlayer())
     .frame(maxWidth: .infinity)
     .padding(.horizontal)
     .background(Color.gray.opacity(0.4))
