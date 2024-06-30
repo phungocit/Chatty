@@ -32,11 +32,11 @@ enum AuthError: Error {
 extension AuthError: LocalizedError {
     var errorDescription: String? {
         switch self {
-        case .accountCreationFailed(let description):
+        case let .accountCreationFailed(description):
             return description
-        case .failedToSaveUserInfo(let description):
+        case let .failedToSaveUserInfo(description):
             return description
-        case .emailLoginFailed(let description):
+        case let .emailLoginFailed(description):
             return description
         }
     }
@@ -46,8 +46,8 @@ final class AuthManager: AuthProvider {
     private init() {
         Task {
             // dummy
-            authState.send(.loggedIn(UserItem(uid: "1", username: "Black Panther", email: "blackpanther@test.com")))
-            //            await autoLogin()
+//            authState.send(.loggedIn(UserItem(uid: "1", username: "Black Panther", email: "blackpanther@test.com")))
+            await autoLogin()
 //            try await logOut()
         }
     }
