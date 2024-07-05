@@ -2,7 +2,7 @@
 //  PhotosPickerItem+.swift
 //  Chatty
 //
-//  Created by Phil Tran on 21/06/2024.
+//  Created by Foo Tran on 21/06/2024.
 //
 
 import Foundation
