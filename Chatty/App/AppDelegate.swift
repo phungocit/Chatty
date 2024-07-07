@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  Chatty
 //
-//  Created by Phil Tran on 16/6/24.
+//  Created by Foo Tran on 16/6/24.
 //
 
 import FirebaseCore
